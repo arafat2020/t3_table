@@ -1,14 +1,19 @@
+import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { ProjectInputSchema } from "prisma/generated/schemas";
 import { db } from "~/server/db";
 
 export class CreateProjectService {
-  private db = db;
+  private db:PrismaClient;
+  constructor() {
+    this.db = db;
+  }
 
   public async createProject(rawData: unknown) {
     const {
       userId,
       User: _,
+      sheets:__,
       ...parsedData
     } = ProjectInputSchema.parse(rawData);
     if (!userId) {
