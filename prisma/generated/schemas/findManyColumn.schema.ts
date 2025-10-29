@@ -1,0 +1,32 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { ColumnIncludeObjectSchema as ColumnIncludeObjectSchema } from './objects/ColumnInclude.schema';
+import { ColumnOrderByWithRelationInputObjectSchema as ColumnOrderByWithRelationInputObjectSchema } from './objects/ColumnOrderByWithRelationInput.schema';
+import { ColumnWhereInputObjectSchema as ColumnWhereInputObjectSchema } from './objects/ColumnWhereInput.schema';
+import { ColumnWhereUniqueInputObjectSchema as ColumnWhereUniqueInputObjectSchema } from './objects/ColumnWhereUniqueInput.schema';
+import { ColumnScalarFieldEnumSchema } from './enums/ColumnScalarFieldEnum.schema';
+
+// Select schema needs to be in file to prevent circular imports
+//------------------------------------------------------
+
+export const ColumnFindManySelectSchema: z.ZodType<Prisma.ColumnSelect> = z.object({
+    id: z.boolean().optional(),
+    sheetId: z.boolean().optional(),
+    index: z.boolean().optional(),
+    name: z.boolean().optional(),
+    type: z.boolean().optional(),
+    sheet: z.boolean().optional()
+  }).strict() as unknown as z.ZodType<Prisma.ColumnSelect>;
+
+export const ColumnFindManySelectZodSchema = z.object({
+    id: z.boolean().optional(),
+    sheetId: z.boolean().optional(),
+    index: z.boolean().optional(),
+    name: z.boolean().optional(),
+    type: z.boolean().optional(),
+    sheet: z.boolean().optional()
+  }).strict();
+
+export const ColumnFindManySchema: z.ZodType<Prisma.ColumnFindManyArgs> = z.object({ select: ColumnFindManySelectSchema.optional(), include: ColumnIncludeObjectSchema.optional(), orderBy: z.union([ColumnOrderByWithRelationInputObjectSchema, ColumnOrderByWithRelationInputObjectSchema.array()]).optional(), where: ColumnWhereInputObjectSchema.optional(), cursor: ColumnWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([ColumnScalarFieldEnumSchema, ColumnScalarFieldEnumSchema.array()]).optional() }).strict() as unknown as z.ZodType<Prisma.ColumnFindManyArgs>;
+
+export const ColumnFindManyZodSchema = z.object({ select: ColumnFindManySelectSchema.optional(), include: ColumnIncludeObjectSchema.optional(), orderBy: z.union([ColumnOrderByWithRelationInputObjectSchema, ColumnOrderByWithRelationInputObjectSchema.array()]).optional(), where: ColumnWhereInputObjectSchema.optional(), cursor: ColumnWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([ColumnScalarFieldEnumSchema, ColumnScalarFieldEnumSchema.array()]).optional() }).strict();

@@ -1,0 +1,17 @@
+
+services:
+  table-db:
+    image: postgres
+    container_name: server-db
+    restart: unless-stopped
+    ports:
+      - "5435:5432"   # host:container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: t3_table
+    volumes:
+      - server_data:/var/lib/postgresql/data
+
+volumes:
+  server_data:
