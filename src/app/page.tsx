@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from "~/server/auth";
+import { auth, signOut } from "~/server/auth";
 import { HydrateClient } from "~/trpc/server";
 import Link from "next/link";
 

@@ -11,7 +11,7 @@ export class CommonService {
   }
 
   public async getFirstProject(rawData: unknown) {
-    const data = ProjectFindFirstSchema.parse(rawData);
+    const data =  ProjectFindFirstSchema.parse(rawData);    
     try {
         const project = await this.dbService.project.findFirst({
       ...data,
