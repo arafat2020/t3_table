@@ -4,29 +4,32 @@ import { ProjectInputSchema } from "prisma/generated/schemas";
 import { db } from "~/server/db";
 
 export class CreateProjectService {
-  private db:PrismaClient;
+  private db: PrismaClient;
   constructor() {
     this.db = db;
   }
 
-  public async createProject(rawData: unknown) {
-    const {
-      userId,
-      User: _,
-      sheets:__,
-      ...parsedData
-    } = ProjectInputSchema.parse(rawData);
+  public async createProject(rawData: { name: string; description?: string; userId: string }) {
+    const { userId, ...projectData } = rawData;
+
     if (!userId) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "User ID is required to create a project",
+        cause: "Missing userId",
       });
     }
     try {
       const project = await this.db.project.create({
         data: {
-          ...parsedData,
-          ...(userId ? { User: { connect: { id: userId } } } : {}),
+          ...projectData,
+          User: { connect: { id: userId } },
+          sheets: {
+            create: {
+              name: "Sheet 1",
+              ownerId: userId
+            }
+          }
         },
       });
       return project;

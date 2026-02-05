@@ -11,21 +11,45 @@ export class CommonService {
   }
 
   public async getFirstProject(rawData: unknown) {
-    const data =  ProjectFindFirstSchema.parse(rawData);    
+    const data = ProjectFindFirstSchema.parse(rawData);
     try {
-        const project = await this.dbService.project.findFirst({
-      ...data,
-    });
-    return project;
+      const project = await this.dbService.project.findFirst({
+        ...data,
+        include: {
+          sheets: true
+        }
+      });
+      return project;
     } catch (error) {
-        throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to fetch project",
-            cause: String(error),
-          });
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch project",
+        cause: String(error),
+      });
     }
   }
-  
+
+  public async getAllProjects(userId: string) {
+    try {
+      const projects = await this.dbService.project.findMany({
+        where: { userId },
+        include: {
+          sheets: true
+        },
+        orderBy: {
+          updatedAt: 'desc'
+        }
+      });
+      return projects;
+    } catch (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch projects",
+        cause: String(error),
+      });
+    }
+  }
+
 }
 
 const commonService = new CommonService();
