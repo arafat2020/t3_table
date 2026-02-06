@@ -17,7 +17,7 @@ export default function SheetPage() {
 
     const [sheetName, setSheetName] = useState("");
     const updateSheetMutation = api.sheet.update.useMutation();
-    const timeoutRef = useRef<NodeJS.Timeout>();
+    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
     // Update local name when sheet data loads
     useEffect(() => {
