@@ -16,6 +16,7 @@ const userwhereinputSchema = z.object({
   email: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   emailVerified: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   image: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
+  password: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   accounts: z.lazy(() => AccountListRelationFilterObjectSchema).optional(),
   sessions: z.lazy(() => SessionListRelationFilterObjectSchema).optional(),
   Projects: z.lazy(() => ProjectListRelationFilterObjectSchema).optional()

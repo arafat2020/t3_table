@@ -9,6 +9,7 @@ const makeSchema = () => z.object({
   email: z.string().optional().nullable(),
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
+  password: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema).optional(),
   Projects: z.lazy(() => ProjectUncheckedCreateNestedManyWithoutUserInputObjectSchema).optional()
 }).strict();

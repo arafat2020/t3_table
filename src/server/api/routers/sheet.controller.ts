@@ -34,7 +34,6 @@ export const sheetRouter = createTRPCRouter({
         return await sheetService.deleteSheet(input.id);
     }),
 
-    // ...
 
     updateCell: protectedProcedure.input(z.object({
         sheetId: z.string(),

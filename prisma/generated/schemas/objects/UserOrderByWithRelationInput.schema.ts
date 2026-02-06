@@ -12,6 +12,7 @@ const makeSchema = () => z.object({
   email: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   emailVerified: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   image: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  password: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   accounts: z.lazy(() => AccountOrderByRelationAggregateInputObjectSchema).optional(),
   sessions: z.lazy(() => SessionOrderByRelationAggregateInputObjectSchema).optional(),
   Projects: z.lazy(() => ProjectOrderByRelationAggregateInputObjectSchema).optional()

@@ -11,6 +11,7 @@ const makeSchema = () => z.object({
   email: z.boolean().optional(),
   emailVerified: z.boolean().optional(),
   image: z.boolean().optional(),
+  password: z.boolean().optional(),
   accounts: z.union([z.boolean(), z.lazy(() => AccountFindManySchema)]).optional(),
   sessions: z.union([z.boolean(), z.lazy(() => SessionFindManySchema)]).optional(),
   Projects: z.union([z.boolean(), z.lazy(() => ProjectFindManySchema)]).optional(),
