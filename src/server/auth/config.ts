@@ -80,4 +80,7 @@ export const authConfig = {
       return token;
     }
   },
+  pages: {
+    signIn: "/login",
+  },
 } satisfies NextAuthConfig;
