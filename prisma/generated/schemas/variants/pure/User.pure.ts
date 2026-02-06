@@ -6,6 +6,7 @@ export const UserModelSchema = z.object({
     email: z.string().nullable(),
     emailVerified: z.date().nullable(),
     image: z.string().nullable(),
+    password: z.string().nullable(),
     accounts: z.array(z.unknown()),
     sessions: z.array(z.unknown()),
     Projects: z.array(z.unknown())

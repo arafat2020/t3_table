@@ -6,6 +6,7 @@ export const UserInputSchema = z.object({
     email: z.string().optional().nullable(),
     emailVerified: z.date().optional().nullable(),
     image: z.string().optional().nullable(),
+    password: z.string().optional().nullable(),
     accounts: z.array(z.unknown()),
     sessions: z.array(z.unknown()),
     Projects: z.array(z.unknown())
