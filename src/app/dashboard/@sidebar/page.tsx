@@ -7,6 +7,7 @@ import { CreateSheetButton } from '~/app/_components/CreateSheetButton';
 import { CreateProjectDialog } from '~/app/_components/CreateProjectDialog';
 import { ConfirmDeleteDialog } from '~/app/_components/ConfirmDeleteDialog';
 import { useRouter, usePathname } from 'next/navigation';
+import { Skeleton } from "~/components/ui/skeleton";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -49,8 +50,24 @@ export default function Sidebar() {
 
   if (isLoading) {
     return (
-      <div className="p-4 flex items-center justify-center h-full">
-        <div className="text-sm text-gray-500">Loading...</div>
+      <div className="p-4 flex flex-col gap-4 h-full">
+        <div className="flex items-center justify-between border-b pb-4">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-8 w-8 rounded" />
+        </div>
+        <div className="flex flex-col gap-4">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-5 w-full" />
+              </div>
+              <div className="pl-6 space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
