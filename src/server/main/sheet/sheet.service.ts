@@ -63,6 +63,37 @@ export class SheetService {
         }
     }
 
+    public async updateSheet(input: { id: string; name?: string }) {
+        try {
+            return await this.db.sheet.update({
+                where: { id: input.id },
+                data: {
+                    ...(input.name && { name: input.name })
+                }
+            });
+        } catch (error) {
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Failed to update sheet",
+                cause: String(error),
+            });
+        }
+    }
+
+    public async deleteSheet(id: string) {
+        try {
+            return await this.db.sheet.delete({
+                where: { id }
+            });
+        } catch (error) {
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Failed to delete sheet",
+                cause: String(error),
+            });
+        }
+    }
+
     public async updateCell(rawData: unknown) {
         // Validation should happen before this or here with a Custom Schema
         const { sheetId, rowIndex, colIndex, value } = rawData as { sheetId: string, rowIndex: number, colIndex: number, value: string };

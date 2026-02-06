@@ -1,20 +1,54 @@
-import { HydrateClient, api } from "~/trpc/server";
+"use client";
+
+import { api } from "~/trpc/react";
 import { Spreadsheet } from "~/components/spreadsheet/Spreadsheet";
 import Link from "next/link";
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
+import type { Sheet, Row, Cell, Column } from "@prisma/client";
 
-export default async function SheetPage({ params }: { params: { sheetId: string } }) {
-    const { sheetId } = await params;
+export default function SheetPage() {
+    const params = useParams();
+    const sheetId = params.sheetId as string;
 
-    const sheet = await api.sheet.get({
+    const { data: sheet, isLoading } = api.sheet.get.useQuery({
         where: { id: sheetId }
     });
+
+    const [sheetName, setSheetName] = useState("");
+    const updateSheetMutation = api.sheet.update.useMutation();
+    const timeoutRef = useRef<NodeJS.Timeout>();
+
+    // Update local name when sheet data loads
+    useEffect(() => {
+        if (sheet?.name) {
+            setSheetName(sheet.name);
+        }
+    }, [sheet?.name]);
+
+    const handleNameChange = (newName: string) => {
+        setSheetName(newName);
+
+        // Debounce the update
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            updateSheetMutation.mutate({
+                id: sheetId,
+                name: newName
+            });
+        }, 500); // Wait 500ms after user stops typing
+    };
+
+    if (isLoading) {
+        return <div className="h-screen w-screen flex items-center justify-center">Loading...</div>;
+    }
 
     if (!sheet) {
         return <div>Sheet not found</div>
     }
-
-    // Transform data if needed or pass directly
-    // The sheet query includes `rows` and `rows.cells`
 
     return (
         <div className="h-screen w-screen flex flex-col bg-white">
@@ -32,7 +66,11 @@ export default async function SheetPage({ params }: { params: { sheetId: string 
                     <div className="flex items-center gap-2">
                         <span className="text-green-600 font-bold text-xl">SheetsClone</span>
                         <span className="text-gray-300">|</span>
-                        <input className="font-medium text-lg outline-none hover:border hover:border-gray-300 px-2 rounded" defaultValue={sheet.name} />
+                        <input
+                            className="font-medium text-lg outline-none hover:border hover:border-gray-300 px-2 rounded"
+                            value={sheetName}
+                            onChange={(e) => handleNameChange(e.target.value)}
+                        />
                     </div>
                 </div>
                 <div className="flex gap-2">
@@ -42,7 +80,7 @@ export default async function SheetPage({ params }: { params: { sheetId: string 
             </div>
             <div className="flex-1 overflow-hidden">
 
-                <Spreadsheet sheetId={sheetId} initialData={sheet} />
+                <Spreadsheet sheetId={sheetId} initialData={sheet as Sheet & { rows: (Row & { cells: Cell[] })[], Column: Column[] }} />
             </div>
         </div>
     );

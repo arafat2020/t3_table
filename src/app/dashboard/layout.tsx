@@ -1,7 +1,6 @@
 import React from "react";
 import { auth } from "~/server/auth";
-import { api, HydrateClient } from "~/trpc/server";
-import CreateFirstProject from "~/app/_components/CreateFirstProject";
+import { HydrateClient } from "~/trpc/server";
 import { redirect } from "next/navigation";
 
 // Layouts can be async in Next.js 13+
@@ -16,18 +15,6 @@ export default async function DashboardLayout({
 
   if (!session) {
     redirect("/api/auth/signin");
-  }
-
-  const projects = await api.project.getAll();
-
-  if (!projects || projects.length === 0) {
-    return (
-      <HydrateClient>
-        <div className="h-screen w-screen">
-          <CreateFirstProject />
-        </div>
-      </HydrateClient>
-    );
   }
 
   return (

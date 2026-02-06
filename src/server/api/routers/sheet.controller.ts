@@ -21,6 +21,19 @@ export const sheetRouter = createTRPCRouter({
         return sheet;
     }),
 
+    update: protectedProcedure.input(z.object({
+        id: z.string(),
+        name: z.string().optional(),
+    })).mutation(async ({ input }) => {
+        return await sheetService.updateSheet(input);
+    }),
+
+    delete: protectedProcedure.input(z.object({
+        id: z.string(),
+    })).mutation(async ({ input }) => {
+        return await sheetService.deleteSheet(input.id);
+    }),
+
     // ...
 
     updateCell: protectedProcedure.input(z.object({

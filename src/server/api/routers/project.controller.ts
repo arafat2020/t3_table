@@ -29,5 +29,11 @@ export const projectRouter = createTRPCRouter({
 
     getAll: protectedProcedure.query(async ({ ctx }) => {
         return await commonService.getAllProjects(ctx.session.user.id);
+    }),
+
+    delete: protectedProcedure.input(z.object({
+        id: z.string(),
+    })).mutation(async ({ input }) => {
+        return await commonService.deleteProject(input.id);
     })
 })

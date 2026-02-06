@@ -50,6 +50,20 @@ export class CommonService {
     }
   }
 
+  public async deleteProject(id: string) {
+    try {
+      return await this.dbService.project.delete({
+        where: { id }
+      });
+    } catch (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to delete project",
+        cause: String(error),
+      });
+    }
+  }
+
 }
 
 const commonService = new CommonService();

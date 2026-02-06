@@ -30,12 +30,29 @@ const getColumnLabel = (index: number): string => {
     return label;
 };
 
+// Calculate initial row count based on screen height
+const calculateRowsFromHeight = (): number => {
+    const ROW_HEIGHT = 24; // h-6 = 24px per row
+    const HEADER_HEIGHT = 36; // header row height
+    const TOOLBAR_HEIGHT = 44; // toolbar height (Fx bar)
+    const BUFFER = 80; // buffer for margins and scrollbar
+
+    const availableHeight = typeof window !== 'undefined'
+        ? window.innerHeight - TOOLBAR_HEIGHT - HEADER_HEIGHT - BUFFER
+        : 600; // fallback for SSR
+
+    return Math.max(Math.floor(availableHeight / ROW_HEIGHT), 10); // minimum 10 rows
+};
+
 export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
     // We'll maintain a local state for the grid to ensure fast UI updates
     // and then sync to backend.
 
-    // Initialize grid size - minimal size or based on existing data
-    const [rowCount, setRowCount] = useState(Math.max(20, initialData.rows.length + 5));
+    // Initialize grid size - use a safe default to avoid hydration mismatch
+    // Will be updated to screen height after mount
+    const [rowCount, setRowCount] = useState(() => {
+        return Math.max(25, initialData.rows.length + 5); // Safe default for SSR
+    });
     const [colCount, setColCount] = useState(Math.max(10, initialData.Column.length + 5));
 
     // Data map: string key "rowIndex,colIndex" -> Cell value
@@ -69,6 +86,21 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
         });
         setData(newData);
     }, [initialData]);
+
+    // Update row count based on screen height after mount (client-side only)
+    useEffect(() => {
+        const updateRowCount = () => {
+            const calculatedRows = calculateRowsFromHeight();
+            setRowCount(prev => Math.max(calculatedRows, initialData.rows.length + 5));
+        };
+
+        // Initial calculation after mount
+        updateRowCount();
+
+        // Update on window resize
+        window.addEventListener('resize', updateRowCount);
+        return () => window.removeEventListener('resize', updateRowCount);
+    }, [initialData.rows.length]);
 
     // Handle cell click
     const handleCellClick = (r: number, c: number) => {
