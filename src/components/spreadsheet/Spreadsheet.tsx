@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from "~/trpc/react";
 import { type Sheet, type Row, type Cell, type Column } from "@prisma/client";
+import { ChartDialog } from "~/components/visualization/ChartDialog";
 
 // Types for our grid data structure
 type GridCell = {
@@ -240,10 +241,10 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
     return (
         <div className="flex flex-col h-full w-full overflow-hidden text-sm">
             {/* Toolbar Placeholder */}
-            <div className="bg-gray-100 border-b p-2 flex gap-2">
-                <div className="font-bold">Fx</div>
+            <div className="bg-gray-100 border-b p-2 flex gap-2 items-center">
+                <div className="font-bold text-gray-500">Fx</div>
                 <input
-                    className="w-full border px-2"
+                    className="flex-1 border px-2 py-1 rounded-sm"
                     value={selectedCell ? (data[`${selectedCell.r},${selectedCell.c}`]?.value || "") : ""}
                     onChange={(e) => {
                         if (selectedCell) {
@@ -251,6 +252,18 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
                         }
                     }}
                     disabled={!selectedCell}
+                />
+                <div className="w-px h-6 bg-gray-300 mx-2"></div>
+                <ChartDialog
+                    data={data}
+                    rowCount={rowCount}
+                    colCount={colCount}
+                    trigger={
+                        <button className="flex items-center gap-1 px-3 py-1 bg-white border rounded shadow-sm hover:bg-gray-50 text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-bar-chart-3"><path d="M3 3v18h18" /><path d="M18 17V9" /><path d="M13 17V5" /><path d="M8 17v-3" /></svg>
+                            Chart
+                        </button>
+                    }
                 />
             </div>
 
