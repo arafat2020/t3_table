@@ -1,0 +1,12 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { CollaboratorOrderByWithRelationInputObjectSchema as CollaboratorOrderByWithRelationInputObjectSchema } from './objects/CollaboratorOrderByWithRelationInput.schema';
+import { CollaboratorWhereInputObjectSchema as CollaboratorWhereInputObjectSchema } from './objects/CollaboratorWhereInput.schema';
+import { CollaboratorWhereUniqueInputObjectSchema as CollaboratorWhereUniqueInputObjectSchema } from './objects/CollaboratorWhereUniqueInput.schema';
+import { CollaboratorCountAggregateInputObjectSchema as CollaboratorCountAggregateInputObjectSchema } from './objects/CollaboratorCountAggregateInput.schema';
+import { CollaboratorMinAggregateInputObjectSchema as CollaboratorMinAggregateInputObjectSchema } from './objects/CollaboratorMinAggregateInput.schema';
+import { CollaboratorMaxAggregateInputObjectSchema as CollaboratorMaxAggregateInputObjectSchema } from './objects/CollaboratorMaxAggregateInput.schema';
+
+export const CollaboratorAggregateSchema: z.ZodType<Prisma.CollaboratorAggregateArgs> = z.object({ orderBy: z.union([CollaboratorOrderByWithRelationInputObjectSchema, CollaboratorOrderByWithRelationInputObjectSchema.array()]).optional(), where: CollaboratorWhereInputObjectSchema.optional(), cursor: CollaboratorWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), CollaboratorCountAggregateInputObjectSchema ]).optional(), _min: CollaboratorMinAggregateInputObjectSchema.optional(), _max: CollaboratorMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.CollaboratorAggregateArgs>;
+
+export const CollaboratorAggregateZodSchema = z.object({ orderBy: z.union([CollaboratorOrderByWithRelationInputObjectSchema, CollaboratorOrderByWithRelationInputObjectSchema.array()]).optional(), where: CollaboratorWhereInputObjectSchema.optional(), cursor: CollaboratorWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), CollaboratorCountAggregateInputObjectSchema ]).optional(), _min: CollaboratorMinAggregateInputObjectSchema.optional(), _max: CollaboratorMaxAggregateInputObjectSchema.optional() }).strict();

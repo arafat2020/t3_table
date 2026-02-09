@@ -8,7 +8,7 @@ import { Grid } from "./Grid";
 
 type SpreadsheetProps = {
     sheetId: string;
-    initialData: Sheet & { rows: (Row & { cells: Cell[] })[], Column: Column[] };
+    initialData: Sheet & { rows: (Row & { cells: Cell[] })[], Column: Column[] } & { role: "owner" | "editor" | "viewer" };
 };
 
 export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
@@ -29,8 +29,9 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
         persistColumnWidth,
         updateRowHeight,
         persistRowHeight,
-        handleAlignmentChange
-    } = useSpreadsheet({ sheetId, initialData });
+        handleAlignmentChange,
+        isReadOnly
+    } = useSpreadsheet({ sheetId, initialData, role: initialData.role });
 
     return (
         <div className="flex flex-col h-full w-full overflow-hidden text-sm">
@@ -41,6 +42,7 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
                 colCount={colCount}
                 onCellChange={handleCellChange}
                 onAlignmentChange={handleAlignmentChange}
+                isReadOnly={isReadOnly}
             />
 
             <Grid
@@ -60,6 +62,7 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
                 updateRowHeight={updateRowHeight}
                 persistColumnWidth={persistColumnWidth}
                 persistRowHeight={persistRowHeight}
+                isReadOnly={isReadOnly}
             />
         </div>
     );

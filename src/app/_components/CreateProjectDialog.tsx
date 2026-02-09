@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { api } from "~/trpc/react";
+import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import {
     Dialog,
@@ -30,7 +31,11 @@ export function CreateProjectDialog({ trigger, onSuccess }: CreateProjectDialogP
             await utils.project.getAll.invalidate();
             setName("");
             setOpen(false);
+            toast.success(`Project "${name}" created!`);
             onSuccess?.();
+        },
+        onError: (err) => {
+            toast.error(err.message || "Failed to create project");
         }
     });
 

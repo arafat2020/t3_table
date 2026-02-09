@@ -12,6 +12,7 @@ type ToolbarProps = {
     colCount: number;
     onCellChange: (r: number, c: number, value: string) => void;
     onAlignmentChange: (align: 'left' | 'center' | 'right') => void;
+    isReadOnly?: boolean;
 };
 
 export function Toolbar({
@@ -20,7 +21,8 @@ export function Toolbar({
     rowCount,
     colCount,
     onCellChange,
-    onAlignmentChange
+    onAlignmentChange,
+    isReadOnly
 }: ToolbarProps) {
     const activeCell = selectedCell ? data[`${selectedCell.r},${selectedCell.c}`] : null;
     const cellValue = activeCell?.value || "";
@@ -37,7 +39,7 @@ export function Toolbar({
                         onCellChange(selectedCell.r, selectedCell.c, e.target.value);
                     }
                 }}
-                disabled={!selectedCell}
+                disabled={!selectedCell || isReadOnly}
             />
 
             <div className="w-px h-6 bg-gray-300 mx-1"></div>
@@ -47,7 +49,7 @@ export function Toolbar({
                     onClick={() => onAlignmentChange('left')}
                     className={`p-1.5 hover:bg-gray-50 ${currentAlign === 'left' ? 'bg-blue-50 text-blue-600' : 'text-gray-600'}`}
                     title="Align Left"
-                    disabled={!selectedCell}
+                    disabled={!selectedCell || isReadOnly}
                 >
                     <AlignLeft size={16} />
                 </button>
@@ -55,7 +57,7 @@ export function Toolbar({
                     onClick={() => onAlignmentChange('center')}
                     className={`p-1.5 border-x hover:bg-gray-50 ${currentAlign === 'center' ? 'bg-blue-50 text-blue-600' : 'text-gray-600'}`}
                     title="Align Center"
-                    disabled={!selectedCell}
+                    disabled={!selectedCell || isReadOnly}
                 >
                     <AlignCenter size={16} />
                 </button>
@@ -63,7 +65,7 @@ export function Toolbar({
                     onClick={() => onAlignmentChange('right')}
                     className={`p-1.5 hover:bg-gray-50 ${currentAlign === 'right' ? 'bg-blue-50 text-blue-600' : 'text-gray-600'}`}
                     title="Align Right"
-                    disabled={!selectedCell}
+                    disabled={!selectedCell || isReadOnly}
                 >
                     <AlignRight size={16} />
                 </button>

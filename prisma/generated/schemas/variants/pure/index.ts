@@ -9,6 +9,7 @@ export { UserModelSchema } from './User.pure';
 export { VerificationTokenModelSchema } from './VerificationToken.pure';
 export { ProjectModelSchema } from './Project.pure';
 export { SheetModelSchema } from './Sheet.pure';
+export { CollaboratorModelSchema } from './Collaborator.pure';
 export { RowModelSchema } from './Row.pure';
 export { ColumnModelSchema } from './Column.pure';
 export { CellModelSchema } from './Cell.pure';

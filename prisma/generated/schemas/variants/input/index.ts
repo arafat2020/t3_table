@@ -9,6 +9,7 @@ export { UserInputSchema } from './User.input';
 export { VerificationTokenInputSchema } from './VerificationToken.input';
 export { ProjectInputSchema } from './Project.input';
 export { SheetInputSchema } from './Sheet.input';
+export { CollaboratorInputSchema } from './Collaborator.input';
 export { RowInputSchema } from './Row.input';
 export { ColumnInputSchema } from './Column.input';
 export { CellInputSchema } from './Cell.input';

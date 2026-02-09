@@ -19,6 +19,7 @@ export const SheetFindFirstSelectSchema: z.ZodType<Prisma.SheetSelect> = z.objec
     projectId: z.boolean().optional(),
     rows: z.boolean().optional(),
     Column: z.boolean().optional(),
+    collaborators: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.SheetSelect>;
 
@@ -32,6 +33,7 @@ export const SheetFindFirstSelectZodSchema = z.object({
     projectId: z.boolean().optional(),
     rows: z.boolean().optional(),
     Column: z.boolean().optional(),
+    collaborators: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict();
 

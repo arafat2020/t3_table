@@ -1,8 +1,6 @@
-"use client";
-
-import React from 'react';
 import { api } from "~/trpc/react";
 import { useRouter } from 'next/navigation';
+import { toast } from "sonner";
 
 export function CreateSheetButton({ projectId }: { projectId: string }) {
     const router = useRouter();
@@ -11,8 +9,12 @@ export function CreateSheetButton({ projectId }: { projectId: string }) {
     const createSheet = api.sheet.create.useMutation({
         onSuccess: async (newSheet) => {
             await utils.project.getAll.invalidate();
+            toast.success("Sheet created successfully!");
             router.refresh(); // Refresh server components (sidebar)
             router.push(`/sheet/${newSheet.id}`);
+        },
+        onError: (err) => {
+            toast.error(err.message || "Failed to create sheet");
         }
     });
 

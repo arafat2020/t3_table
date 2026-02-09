@@ -2,7 +2,8 @@ import * as z from 'zod';
 import type { Prisma } from '@prisma/client';
 import { AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema as AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './AccountUncheckedCreateNestedManyWithoutUserInput.schema';
 import { SessionUncheckedCreateNestedManyWithoutUserInputObjectSchema as SessionUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './SessionUncheckedCreateNestedManyWithoutUserInput.schema';
-import { ProjectUncheckedCreateNestedManyWithoutUserInputObjectSchema as ProjectUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './ProjectUncheckedCreateNestedManyWithoutUserInput.schema'
+import { ProjectUncheckedCreateNestedManyWithoutUserInputObjectSchema as ProjectUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './ProjectUncheckedCreateNestedManyWithoutUserInput.schema';
+import { CollaboratorUncheckedCreateNestedManyWithoutUserInputObjectSchema as CollaboratorUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './CollaboratorUncheckedCreateNestedManyWithoutUserInput.schema'
 
 const makeSchema = () => z.object({
   id: z.string().optional(),
@@ -13,7 +14,8 @@ const makeSchema = () => z.object({
   password: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputObjectSchema),
-  Projects: z.lazy(() => ProjectUncheckedCreateNestedManyWithoutUserInputObjectSchema)
+  Projects: z.lazy(() => ProjectUncheckedCreateNestedManyWithoutUserInputObjectSchema),
+  sharedSheets: z.lazy(() => CollaboratorUncheckedCreateNestedManyWithoutUserInputObjectSchema)
 }).strict();
 export const UserUncheckedCreateInputObjectSchema: z.ZodType<Prisma.UserUncheckedCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.UserUncheckedCreateInput>;
 export const UserUncheckedCreateInputObjectZodSchema = makeSchema();

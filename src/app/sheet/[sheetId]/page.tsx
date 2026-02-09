@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useParams, notFound } from "next/navigation";
 import type { Sheet, Row, Cell, Column } from "@prisma/client";
+import { ShareDialog } from "~/app/_components/ShareDialog";
 import { Skeleton } from "~/components/ui/skeleton";
 
 export default function SheetPage() {
@@ -82,6 +83,9 @@ export default function SheetPage() {
         notFound();
     }
 
+    const isViewer = sheet.role === "viewer";
+    const isOwner = sheet.role === "owner";
+
     return (
         <div className="h-screen w-screen flex flex-col bg-white">
             <div className="h-12 border-b flex items-center px-4 justify-between">
@@ -99,20 +103,22 @@ export default function SheetPage() {
                         <span className="text-gray-600 font-bold text-xl">Mini Sheet</span>
                         <span className="text-gray-300">|</span>
                         <input
-                            className="font-medium text-lg outline-none hover:border hover:border-gray-300 px-2 rounded"
+                            className="font-medium text-lg outline-none hover:border hover:border-gray-300 px-2 rounded disabled:bg-transparent disabled:border-none"
                             value={sheetName}
                             onChange={(e) => handleNameChange(e.target.value)}
+                            disabled={isViewer}
                         />
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    {/* Menu Actions */}
-                    <button className="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm font-medium">Share</button>
+                    {isOwner && <ShareDialog sheetId={sheetId} />}
                 </div>
             </div>
             <div className="flex-1 overflow-hidden">
-
-                <Spreadsheet sheetId={sheetId} initialData={sheet as Sheet & { rows: (Row & { cells: Cell[] })[], Column: Column[] }} />
+                <Spreadsheet
+                    sheetId={sheetId}
+                    initialData={sheet as Sheet & { rows: (Row & { cells: Cell[] })[], Column: Column[], role: "owner" | "editor" | "viewer" }}
+                />
             </div>
         </div>
     );

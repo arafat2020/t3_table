@@ -8,7 +8,8 @@ export const SheetAggregateResultSchema = z.object({  _count: z.object({
     Project: z.number(),
     projectId: z.number(),
     rows: z.number(),
-    Column: z.number()
+    Column: z.number(),
+    collaborators: z.number()
   }).optional(),
   _min: z.object({
     id: z.string().nullable(),

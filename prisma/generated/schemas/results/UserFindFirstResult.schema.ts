@@ -8,5 +8,6 @@ export const UserFindFirstResultSchema = z.nullable(z.object({
   password: z.string().optional(),
   accounts: z.array(z.unknown()),
   sessions: z.array(z.unknown()),
-  Projects: z.array(z.unknown())
+  Projects: z.array(z.unknown()),
+  sharedSheets: z.array(z.unknown())
 }));

@@ -10,6 +10,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 export default function MainView() {
   const router = useRouter();
   const utils = api.useUtils();
+  const { data: sheets = [], isLoading: isLoadingSheets } = api.sheet.getShared.useQuery();
   const { data: projects = [], isLoading } = api.project.getAll.useQuery();
 
   const deleteProjectMutation = api.project.delete.useMutation({
@@ -18,7 +19,7 @@ export default function MainView() {
     }
   });
 
-  if (isLoading) {
+  if (isLoading || isLoadingSheets) {
     return (
       <div className="h-full w-full p-6 overflow-y-auto">
         <div className="mb-6 flex items-center justify-between">
@@ -164,6 +165,55 @@ export default function MainView() {
           </div>
         ))}
       </div>
+
+      {sheets.length > 0 && (
+        <>
+          <div className="mt-12 mb-6 flex items-center justify-between">
+            <h1 className="text-2xl font-bold">Shared Sheets</h1>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sheets.map((sheet) => (
+              <div
+                key={sheet.id}
+                className="bg-white border rounded-lg p-6 hover:shadow-md transition-shadow group relative cursor-pointer"
+                onClick={() => router.push(`/sheet/${sheet.id}`)}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800">{sheet.name}</h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Shared with you
+                    </p>
+                  </div>
+                  <div className="p-2 bg-green-50 rounded">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-green-600"
+                    >
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="text-sm text-gray-400">
+                  Last updated {new Date(sheet.updatedAt).toLocaleDateString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

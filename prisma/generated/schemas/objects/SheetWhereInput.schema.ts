@@ -6,7 +6,8 @@ import { StringNullableFilterObjectSchema as StringNullableFilterObjectSchema } 
 import { ProjectNullableScalarRelationFilterObjectSchema as ProjectNullableScalarRelationFilterObjectSchema } from './ProjectNullableScalarRelationFilter.schema';
 import { ProjectWhereInputObjectSchema as ProjectWhereInputObjectSchema } from './ProjectWhereInput.schema';
 import { RowListRelationFilterObjectSchema as RowListRelationFilterObjectSchema } from './RowListRelationFilter.schema';
-import { ColumnListRelationFilterObjectSchema as ColumnListRelationFilterObjectSchema } from './ColumnListRelationFilter.schema'
+import { ColumnListRelationFilterObjectSchema as ColumnListRelationFilterObjectSchema } from './ColumnListRelationFilter.schema';
+import { CollaboratorListRelationFilterObjectSchema as CollaboratorListRelationFilterObjectSchema } from './CollaboratorListRelationFilter.schema'
 
 const sheetwhereinputSchema = z.object({
   AND: z.union([z.lazy(() => SheetWhereInputObjectSchema), z.lazy(() => SheetWhereInputObjectSchema).array()]).optional(),
@@ -20,7 +21,8 @@ const sheetwhereinputSchema = z.object({
   projectId: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   Project: z.union([z.lazy(() => ProjectNullableScalarRelationFilterObjectSchema), z.lazy(() => ProjectWhereInputObjectSchema)]).optional(),
   rows: z.lazy(() => RowListRelationFilterObjectSchema).optional(),
-  Column: z.lazy(() => ColumnListRelationFilterObjectSchema).optional()
+  Column: z.lazy(() => ColumnListRelationFilterObjectSchema).optional(),
+  collaborators: z.lazy(() => CollaboratorListRelationFilterObjectSchema).optional()
 }).strict();
 export const SheetWhereInputObjectSchema: z.ZodType<Prisma.SheetWhereInput> = sheetwhereinputSchema as unknown as z.ZodType<Prisma.SheetWhereInput>;
 export const SheetWhereInputObjectZodSchema = sheetwhereinputSchema;

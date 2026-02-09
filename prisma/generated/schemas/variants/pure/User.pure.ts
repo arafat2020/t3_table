@@ -9,7 +9,8 @@ export const UserModelSchema = z.object({
     password: z.string().nullable(),
     accounts: z.array(z.unknown()),
     sessions: z.array(z.unknown()),
-    Projects: z.array(z.unknown())
+    Projects: z.array(z.unknown()),
+    sharedSheets: z.array(z.unknown())
 }).strict();
 
 export type UserPureType = z.infer<typeof UserModelSchema>;

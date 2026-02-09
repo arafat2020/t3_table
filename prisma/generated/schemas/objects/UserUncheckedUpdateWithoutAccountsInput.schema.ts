@@ -4,7 +4,8 @@ import { StringFieldUpdateOperationsInputObjectSchema as StringFieldUpdateOperat
 import { NullableStringFieldUpdateOperationsInputObjectSchema as NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema as NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { SessionUncheckedUpdateManyWithoutUserNestedInputObjectSchema as SessionUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './SessionUncheckedUpdateManyWithoutUserNestedInput.schema';
-import { ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema as ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './ProjectUncheckedUpdateManyWithoutUserNestedInput.schema'
+import { ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema as ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './ProjectUncheckedUpdateManyWithoutUserNestedInput.schema';
+import { CollaboratorUncheckedUpdateManyWithoutUserNestedInputObjectSchema as CollaboratorUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './CollaboratorUncheckedUpdateManyWithoutUserNestedInput.schema'
 
 const makeSchema = () => z.object({
   id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
@@ -14,7 +15,8 @@ const makeSchema = () => z.object({
   image: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   password: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
-  Projects: z.lazy(() => ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional()
+  Projects: z.lazy(() => ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
+  sharedSheets: z.lazy(() => CollaboratorUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional()
 }).strict();
 export const UserUncheckedUpdateWithoutAccountsInputObjectSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutAccountsInput> = makeSchema() as unknown as z.ZodType<Prisma.UserUncheckedUpdateWithoutAccountsInput>;
 export const UserUncheckedUpdateWithoutAccountsInputObjectZodSchema = makeSchema();

@@ -5,7 +5,8 @@ import { NullableStringFieldUpdateOperationsInputObjectSchema as NullableStringF
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema as NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { AccountUncheckedUpdateManyWithoutUserNestedInputObjectSchema as AccountUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './AccountUncheckedUpdateManyWithoutUserNestedInput.schema';
 import { SessionUncheckedUpdateManyWithoutUserNestedInputObjectSchema as SessionUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './SessionUncheckedUpdateManyWithoutUserNestedInput.schema';
-import { ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema as ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './ProjectUncheckedUpdateManyWithoutUserNestedInput.schema'
+import { ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema as ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './ProjectUncheckedUpdateManyWithoutUserNestedInput.schema';
+import { CollaboratorUncheckedUpdateManyWithoutUserNestedInputObjectSchema as CollaboratorUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './CollaboratorUncheckedUpdateManyWithoutUserNestedInput.schema'
 
 const makeSchema = () => z.object({
   id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
@@ -16,7 +17,8 @@ const makeSchema = () => z.object({
   password: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
-  Projects: z.lazy(() => ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional()
+  Projects: z.lazy(() => ProjectUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
+  sharedSheets: z.lazy(() => CollaboratorUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional()
 }).strict();
 export const UserUncheckedUpdateInputObjectSchema: z.ZodType<Prisma.UserUncheckedUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.UserUncheckedUpdateInput>;
 export const UserUncheckedUpdateInputObjectZodSchema = makeSchema();

@@ -5,7 +5,8 @@ import { StringNullableFilterObjectSchema as StringNullableFilterObjectSchema } 
 import { DateTimeNullableFilterObjectSchema as DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
 import { AccountListRelationFilterObjectSchema as AccountListRelationFilterObjectSchema } from './AccountListRelationFilter.schema';
 import { SessionListRelationFilterObjectSchema as SessionListRelationFilterObjectSchema } from './SessionListRelationFilter.schema';
-import { ProjectListRelationFilterObjectSchema as ProjectListRelationFilterObjectSchema } from './ProjectListRelationFilter.schema'
+import { ProjectListRelationFilterObjectSchema as ProjectListRelationFilterObjectSchema } from './ProjectListRelationFilter.schema';
+import { CollaboratorListRelationFilterObjectSchema as CollaboratorListRelationFilterObjectSchema } from './CollaboratorListRelationFilter.schema'
 
 const userwhereinputSchema = z.object({
   AND: z.union([z.lazy(() => UserWhereInputObjectSchema), z.lazy(() => UserWhereInputObjectSchema).array()]).optional(),
@@ -19,7 +20,8 @@ const userwhereinputSchema = z.object({
   password: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   accounts: z.lazy(() => AccountListRelationFilterObjectSchema).optional(),
   sessions: z.lazy(() => SessionListRelationFilterObjectSchema).optional(),
-  Projects: z.lazy(() => ProjectListRelationFilterObjectSchema).optional()
+  Projects: z.lazy(() => ProjectListRelationFilterObjectSchema).optional(),
+  sharedSheets: z.lazy(() => CollaboratorListRelationFilterObjectSchema).optional()
 }).strict();
 export const UserWhereInputObjectSchema: z.ZodType<Prisma.UserWhereInput> = userwhereinputSchema as unknown as z.ZodType<Prisma.UserWhereInput>;
 export const UserWhereInputObjectZodSchema = userwhereinputSchema;

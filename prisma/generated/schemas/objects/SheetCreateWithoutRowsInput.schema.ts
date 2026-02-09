@@ -1,7 +1,8 @@
 import * as z from 'zod';
 import type { Prisma } from '@prisma/client';
 import { ProjectCreateNestedOneWithoutSheetsInputObjectSchema as ProjectCreateNestedOneWithoutSheetsInputObjectSchema } from './ProjectCreateNestedOneWithoutSheetsInput.schema';
-import { ColumnCreateNestedManyWithoutSheetInputObjectSchema as ColumnCreateNestedManyWithoutSheetInputObjectSchema } from './ColumnCreateNestedManyWithoutSheetInput.schema'
+import { ColumnCreateNestedManyWithoutSheetInputObjectSchema as ColumnCreateNestedManyWithoutSheetInputObjectSchema } from './ColumnCreateNestedManyWithoutSheetInput.schema';
+import { CollaboratorCreateNestedManyWithoutSheetInputObjectSchema as CollaboratorCreateNestedManyWithoutSheetInputObjectSchema } from './CollaboratorCreateNestedManyWithoutSheetInput.schema'
 
 const makeSchema = () => z.object({
   id: z.string().optional(),
@@ -10,7 +11,8 @@ const makeSchema = () => z.object({
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   Project: z.lazy(() => ProjectCreateNestedOneWithoutSheetsInputObjectSchema).optional(),
-  Column: z.lazy(() => ColumnCreateNestedManyWithoutSheetInputObjectSchema).optional()
+  Column: z.lazy(() => ColumnCreateNestedManyWithoutSheetInputObjectSchema).optional(),
+  collaborators: z.lazy(() => CollaboratorCreateNestedManyWithoutSheetInputObjectSchema).optional()
 }).strict();
 export const SheetCreateWithoutRowsInputObjectSchema: z.ZodType<Prisma.SheetCreateWithoutRowsInput> = makeSchema() as unknown as z.ZodType<Prisma.SheetCreateWithoutRowsInput>;
 export const SheetCreateWithoutRowsInputObjectZodSchema = makeSchema();

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { toast } from "sonner";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -27,12 +28,15 @@ export default function LoginPage() {
 
             if (result?.error) {
                 setError("Invalid email or password");
+                toast.error("Invalid email or password");
             } else {
+                toast.success("Welcome back!");
                 router.push("/dashboard");
                 router.refresh();
             }
         } catch (err) {
             setError("An error occurred. Please try again.");
+            toast.error("An error occurred during sign in.");
         }
     };
 

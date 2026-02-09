@@ -1,0 +1,13 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { CollaboratorWhereInputObjectSchema as CollaboratorWhereInputObjectSchema } from './objects/CollaboratorWhereInput.schema';
+import { CollaboratorOrderByWithAggregationInputObjectSchema as CollaboratorOrderByWithAggregationInputObjectSchema } from './objects/CollaboratorOrderByWithAggregationInput.schema';
+import { CollaboratorScalarWhereWithAggregatesInputObjectSchema as CollaboratorScalarWhereWithAggregatesInputObjectSchema } from './objects/CollaboratorScalarWhereWithAggregatesInput.schema';
+import { CollaboratorScalarFieldEnumSchema } from './enums/CollaboratorScalarFieldEnum.schema';
+import { CollaboratorCountAggregateInputObjectSchema as CollaboratorCountAggregateInputObjectSchema } from './objects/CollaboratorCountAggregateInput.schema';
+import { CollaboratorMinAggregateInputObjectSchema as CollaboratorMinAggregateInputObjectSchema } from './objects/CollaboratorMinAggregateInput.schema';
+import { CollaboratorMaxAggregateInputObjectSchema as CollaboratorMaxAggregateInputObjectSchema } from './objects/CollaboratorMaxAggregateInput.schema';
+
+export const CollaboratorGroupBySchema: z.ZodType<Prisma.CollaboratorGroupByArgs> = z.object({ where: CollaboratorWhereInputObjectSchema.optional(), orderBy: z.union([CollaboratorOrderByWithAggregationInputObjectSchema, CollaboratorOrderByWithAggregationInputObjectSchema.array()]).optional(), having: CollaboratorScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(CollaboratorScalarFieldEnumSchema), _count: z.union([ z.literal(true), CollaboratorCountAggregateInputObjectSchema ]).optional(), _min: CollaboratorMinAggregateInputObjectSchema.optional(), _max: CollaboratorMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.CollaboratorGroupByArgs>;
+
+export const CollaboratorGroupByZodSchema = z.object({ where: CollaboratorWhereInputObjectSchema.optional(), orderBy: z.union([CollaboratorOrderByWithAggregationInputObjectSchema, CollaboratorOrderByWithAggregationInputObjectSchema.array()]).optional(), having: CollaboratorScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(CollaboratorScalarFieldEnumSchema), _count: z.union([ z.literal(true), CollaboratorCountAggregateInputObjectSchema ]).optional(), _min: CollaboratorMinAggregateInputObjectSchema.optional(), _max: CollaboratorMaxAggregateInputObjectSchema.optional() }).strict();

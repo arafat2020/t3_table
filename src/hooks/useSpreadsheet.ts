@@ -18,6 +18,7 @@ export type Selection = { r: number, c: number } | null;
 type UseSpreadsheetProps = {
     sheetId: string;
     initialData: Sheet & { rows: (Row & { cells: Cell[] })[], Column: Column[] };
+    role: "owner" | "editor" | "viewer";
 };
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -47,7 +48,8 @@ const calculateRowsFromHeight = (): number => {
     return Math.max(Math.floor(availableHeight / ROW_HEIGHT), 10); // minimum 10 rows
 };
 
-export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
+export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetProps) {
+    const isReadOnly = role === "viewer";
     // Initialize grid size
     const [rowCount, setRowCount] = useState(() => {
         return Math.max(25, initialData.rows.length + 5);
@@ -123,12 +125,14 @@ export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
 
     // Handle double click to edit
     const handleDoubleClick = (r: number, c: number) => {
+        if (isReadOnly) return;
         setSelectedCell({ r, c });
         setEditingCell({ r, c });
     };
 
     // Handle cell value change
     const handleCellChange = (r: number, c: number, value: string) => {
+        if (isReadOnly) return;
         const key = `${r},${c}`;
         const existing = data[key];
 
@@ -209,7 +213,7 @@ export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
             }
         } else if (e.key === 'Enter') {
             e.preventDefault();
-            setEditingCell({ r, c });
+            if (!isReadOnly) setEditingCell({ r, c });
         } else if (e.key === 'Tab') {
             e.preventDefault();
             const newC = e.shiftKey ? Math.max(c - 1, 0) : Math.min(c + 1, colCount - 1);
@@ -221,6 +225,7 @@ export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
             e.preventDefault();
             setSelectedCell(null);
         } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+            if (isReadOnly) return;
             setEditingCell({ r, c });
             const key = `${r},${c}`;
             const newData = { ...data };
@@ -244,19 +249,21 @@ export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
     }, []);
 
     const persistColumnWidth = useCallback((index: number, width: number) => {
+        if (isReadOnly) return;
         updateColumnWidthMutation.mutate({ sheetId, colIndex: index, width: Math.max(width, 40) });
-    }, [sheetId, updateColumnWidthMutation]);
+    }, [sheetId, updateColumnWidthMutation, isReadOnly]);
 
     const updateRowHeight = useCallback((index: number, height: number) => {
         setRowHeights(prev => ({ ...prev, [index]: Math.max(height, 20) }));
     }, []);
 
     const persistRowHeight = useCallback((index: number, height: number) => {
+        if (isReadOnly) return;
         updateRowHeightMutation.mutate({ sheetId, rowIndex: index, height: Math.max(height, 20) });
-    }, [sheetId, updateRowHeightMutation]);
+    }, [sheetId, updateRowHeightMutation, isReadOnly]);
 
     const handleAlignmentChange = (align: 'left' | 'center' | 'right') => {
-        if (!selectedCell) return;
+        if (!selectedCell || isReadOnly) return;
         const { r, c } = selectedCell;
         const key = `${r},${c}`;
         const existing = data[key];
@@ -296,6 +303,7 @@ export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
         persistColumnWidth,
         updateRowHeight,
         persistRowHeight,
-        handleAlignmentChange
+        handleAlignmentChange,
+        isReadOnly
     };
 }

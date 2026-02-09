@@ -10,9 +10,10 @@ type HeaderCellProps = {
     width?: number;
     height?: number;
     onResizeStart?: (e: React.MouseEvent, index: number, type: 'row' | 'col') => void;
+    isReadOnly?: boolean;
 };
 
-export function HeaderCell({ type, label, index, width, height, onResizeStart }: HeaderCellProps) {
+export function HeaderCell({ type, label, index, width, height, onResizeStart, isReadOnly }: HeaderCellProps) {
     if (type === 'row') {
         return (
             <td
@@ -20,10 +21,12 @@ export function HeaderCell({ type, label, index, width, height, onResizeStart }:
                 style={{ height }}
             >
                 {(index ?? 0) + 1}
-                <div
-                    className="absolute bottom-0 left-0 right-0 h-1 cursor-row-resize hover:bg-blue-400 z-20"
-                    onMouseDown={(e) => index !== undefined && onResizeStart?.(e, index, 'row')}
-                />
+                {!isReadOnly && (
+                    <div
+                        className="absolute bottom-0 left-0 right-0 h-1 cursor-row-resize hover:bg-blue-400 z-20"
+                        onMouseDown={(e) => index !== undefined && onResizeStart?.(e, index, 'row')}
+                    />
+                )}
             </td>
         );
     }
@@ -34,10 +37,12 @@ export function HeaderCell({ type, label, index, width, height, onResizeStart }:
             style={{ width }}
         >
             {label ?? (index !== undefined ? getColumnLabel(index) : "")}
-            <div
-                className="absolute top-0 bottom-0 right-0 w-1 cursor-col-resize hover:bg-blue-400 z-20"
-                onMouseDown={(e) => index !== undefined && onResizeStart?.(e, index, 'col')}
-            />
+            {!isReadOnly && (
+                <div
+                    className="absolute top-0 bottom-0 right-0 w-1 cursor-col-resize hover:bg-blue-400 z-20"
+                    onMouseDown={(e) => index !== undefined && onResizeStart?.(e, index, 'col')}
+                />
+            )}
         </th>
     );
 }

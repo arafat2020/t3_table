@@ -3,7 +3,8 @@ import type { Prisma } from '@prisma/client';
 import { StringFieldUpdateOperationsInputObjectSchema as StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema as DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
 import { ProjectUpdateOneWithoutSheetsNestedInputObjectSchema as ProjectUpdateOneWithoutSheetsNestedInputObjectSchema } from './ProjectUpdateOneWithoutSheetsNestedInput.schema';
-import { ColumnUpdateManyWithoutSheetNestedInputObjectSchema as ColumnUpdateManyWithoutSheetNestedInputObjectSchema } from './ColumnUpdateManyWithoutSheetNestedInput.schema'
+import { ColumnUpdateManyWithoutSheetNestedInputObjectSchema as ColumnUpdateManyWithoutSheetNestedInputObjectSchema } from './ColumnUpdateManyWithoutSheetNestedInput.schema';
+import { CollaboratorUpdateManyWithoutSheetNestedInputObjectSchema as CollaboratorUpdateManyWithoutSheetNestedInputObjectSchema } from './CollaboratorUpdateManyWithoutSheetNestedInput.schema'
 
 const makeSchema = () => z.object({
   id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
@@ -12,7 +13,8 @@ const makeSchema = () => z.object({
   createdAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   updatedAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   Project: z.lazy(() => ProjectUpdateOneWithoutSheetsNestedInputObjectSchema).optional(),
-  Column: z.lazy(() => ColumnUpdateManyWithoutSheetNestedInputObjectSchema).optional()
+  Column: z.lazy(() => ColumnUpdateManyWithoutSheetNestedInputObjectSchema).optional(),
+  collaborators: z.lazy(() => CollaboratorUpdateManyWithoutSheetNestedInputObjectSchema).optional()
 }).strict();
 export const SheetUpdateWithoutRowsInputObjectSchema: z.ZodType<Prisma.SheetUpdateWithoutRowsInput> = makeSchema() as unknown as z.ZodType<Prisma.SheetUpdateWithoutRowsInput>;
 export const SheetUpdateWithoutRowsInputObjectZodSchema = makeSchema();

@@ -3,12 +3,14 @@ import type { Prisma } from '@prisma/client';
 import { AccountFindManySchema as AccountFindManySchema } from '../findManyAccount.schema';
 import { SessionFindManySchema as SessionFindManySchema } from '../findManySession.schema';
 import { ProjectFindManySchema as ProjectFindManySchema } from '../findManyProject.schema';
+import { CollaboratorFindManySchema as CollaboratorFindManySchema } from '../findManyCollaborator.schema';
 import { UserCountOutputTypeArgsObjectSchema as UserCountOutputTypeArgsObjectSchema } from './UserCountOutputTypeArgs.schema'
 
 const makeSchema = () => z.object({
   accounts: z.union([z.boolean(), z.lazy(() => AccountFindManySchema)]).optional(),
   sessions: z.union([z.boolean(), z.lazy(() => SessionFindManySchema)]).optional(),
   Projects: z.union([z.boolean(), z.lazy(() => ProjectFindManySchema)]).optional(),
+  sharedSheets: z.union([z.boolean(), z.lazy(() => CollaboratorFindManySchema)]).optional(),
   _count: z.union([z.boolean(), z.lazy(() => UserCountOutputTypeArgsObjectSchema)]).optional()
 }).strict();
 export const UserIncludeObjectSchema: z.ZodType<Prisma.UserInclude> = makeSchema() as unknown as z.ZodType<Prisma.UserInclude>;

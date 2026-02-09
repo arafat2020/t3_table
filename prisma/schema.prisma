@@ -47,15 +47,16 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String         @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?        @unique
     emailVerified DateTime?
     image         String?
     password      String?
     accounts      Account[]
     sessions      Session[]
     Projects      Project[]
+    sharedSheets  Collaborator[]
 }
 
 model VerificationToken {
@@ -78,15 +79,28 @@ model Project {
 }
 
 model Sheet {
-    id        String   @id @default(cuid())
-    name      String
-    ownerId   String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    Project   Project? @relation(fields: [projectId], references: [id])
-    projectId String?
-    rows      Row[]
-    Column    Column[]
+    id            String         @id @default(cuid())
+    name          String
+    ownerId       String
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    Project       Project?       @relation(fields: [projectId], references: [id])
+    projectId     String?
+    rows          Row[]
+    Column        Column[]
+    collaborators Collaborator[]
+}
+
+model Collaborator {
+    id      String @id @default(cuid())
+    sheetId String
+    userId  String
+    role    String @default("viewer") // "viewer", "editor"
+
+    sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+    user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([sheetId, userId])
 }
 
 model Row {

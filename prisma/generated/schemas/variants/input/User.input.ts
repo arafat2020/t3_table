@@ -9,7 +9,8 @@ export const UserInputSchema = z.object({
     password: z.string().optional().nullable(),
     accounts: z.array(z.unknown()),
     sessions: z.array(z.unknown()),
-    Projects: z.array(z.unknown())
+    Projects: z.array(z.unknown()),
+    sharedSheets: z.array(z.unknown())
 }).strict();
 
 export type UserInputType = z.infer<typeof UserInputSchema>;

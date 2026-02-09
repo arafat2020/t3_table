@@ -16,6 +16,8 @@ const geist = Geist({
   variable: "--font-geist-sans",
 });
 
+import { Toaster } from "sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -23,6 +25,7 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body suppressHydrationWarning>
         <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );

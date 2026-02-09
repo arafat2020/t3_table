@@ -15,7 +15,8 @@ export const UserGroupByResultSchema = z.array(z.object({
     password: z.number(),
     accounts: z.number(),
     sessions: z.number(),
-    Projects: z.number()
+    Projects: z.number(),
+    sharedSheets: z.number()
   }).optional(),
   _min: z.object({
     id: z.string().nullable(),

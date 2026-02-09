@@ -9,7 +9,8 @@ export const SheetFindManyResultSchema = z.object({
   Project: z.unknown().optional(),
   projectId: z.string().optional(),
   rows: z.array(z.unknown()),
-  Column: z.array(z.unknown())
+  Column: z.array(z.unknown()),
+  collaborators: z.array(z.unknown())
 })),
   pagination: z.object({
   page: z.number().int().min(1),

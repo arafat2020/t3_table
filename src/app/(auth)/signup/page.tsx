@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { api } from "~/trpc/react";
+import { toast } from "sonner";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -26,9 +27,12 @@ export default function SignupPage() {
                 password,
                 name,
             });
+            toast.success("Account created successfully!");
             router.push("/login");
         } catch (err) {
-            setError((err as Error).message || "An error occurred. Please try again.");
+            const msg = (err as Error).message || "An error occurred. Please try again.";
+            setError(msg);
+            toast.error(msg);
         }
     };
 

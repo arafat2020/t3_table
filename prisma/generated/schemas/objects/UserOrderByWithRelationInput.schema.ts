@@ -4,7 +4,8 @@ import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { SortOrderInputObjectSchema as SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { AccountOrderByRelationAggregateInputObjectSchema as AccountOrderByRelationAggregateInputObjectSchema } from './AccountOrderByRelationAggregateInput.schema';
 import { SessionOrderByRelationAggregateInputObjectSchema as SessionOrderByRelationAggregateInputObjectSchema } from './SessionOrderByRelationAggregateInput.schema';
-import { ProjectOrderByRelationAggregateInputObjectSchema as ProjectOrderByRelationAggregateInputObjectSchema } from './ProjectOrderByRelationAggregateInput.schema'
+import { ProjectOrderByRelationAggregateInputObjectSchema as ProjectOrderByRelationAggregateInputObjectSchema } from './ProjectOrderByRelationAggregateInput.schema';
+import { CollaboratorOrderByRelationAggregateInputObjectSchema as CollaboratorOrderByRelationAggregateInputObjectSchema } from './CollaboratorOrderByRelationAggregateInput.schema'
 
 const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
@@ -15,7 +16,8 @@ const makeSchema = () => z.object({
   password: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   accounts: z.lazy(() => AccountOrderByRelationAggregateInputObjectSchema).optional(),
   sessions: z.lazy(() => SessionOrderByRelationAggregateInputObjectSchema).optional(),
-  Projects: z.lazy(() => ProjectOrderByRelationAggregateInputObjectSchema).optional()
+  Projects: z.lazy(() => ProjectOrderByRelationAggregateInputObjectSchema).optional(),
+  sharedSheets: z.lazy(() => CollaboratorOrderByRelationAggregateInputObjectSchema).optional()
 }).strict();
 export const UserOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.UserOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.UserOrderByWithRelationInput>;
 export const UserOrderByWithRelationInputObjectZodSchema = makeSchema();

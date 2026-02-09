@@ -22,6 +22,7 @@ type GridProps = {
     updateRowHeight: (index: number, height: number) => void;
     persistColumnWidth: (index: number, width: number) => void;
     persistRowHeight: (index: number, height: number) => void;
+    isReadOnly?: boolean;
 };
 
 export function Grid({
@@ -40,11 +41,13 @@ export function Grid({
     updateColumnWidth,
     updateRowHeight,
     persistColumnWidth,
-    persistRowHeight
+    persistRowHeight,
+    isReadOnly
 }: GridProps) {
     const [resizing, setResizing] = React.useState<{ type: 'row' | 'col'; index: number; startPos: number; startSize: number } | null>(null);
 
     const handleResizeStart = (e: React.MouseEvent, index: number, type: 'row' | 'col') => {
+        if (isReadOnly) return;
         e.preventDefault();
         const startPos = type === 'col' ? e.pageX : e.pageY;
         const startSize = type === 'col'
@@ -97,6 +100,7 @@ export function Grid({
                                 index={i}
                                 width={columnWidths[i] ?? 100}
                                 onResizeStart={handleResizeStart}
+                                isReadOnly={isReadOnly}
                             />
                         ))}
                     </tr>
@@ -109,6 +113,7 @@ export function Grid({
                                 index={r}
                                 height={rowHeights[r] ?? 24}
                                 onResizeStart={handleResizeStart}
+                                isReadOnly={isReadOnly}
                             />
                             {Array.from({ length: colCount }).map((_, c) => {
                                 const cellKey = `${r},${c}`;

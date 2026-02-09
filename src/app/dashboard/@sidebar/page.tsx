@@ -9,10 +9,12 @@ import { CreateProjectDialog } from '~/app/_components/CreateProjectDialog';
 import { ConfirmDeleteDialog } from '~/app/_components/ConfirmDeleteDialog';
 import { useRouter, usePathname } from 'next/navigation';
 import { Skeleton } from "~/components/ui/skeleton";
+import { toast } from "sonner";
 
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  const { data: sharedSheets = [] } = api.sheet.getShared.useQuery();
   const { data: projects = [], isLoading } = api.project.getAll.useQuery();
   const utils = api.useUtils();
 
@@ -24,16 +26,24 @@ export default function Sidebar() {
   const deleteSheetMutation = api.sheet.delete.useMutation({
     onSuccess: async () => {
       await utils.project.getAll.invalidate();
+      toast.success("Sheet deleted successfully");
       if (pathname.startsWith('/sheet/')) {
         router.push('/dashboard');
       }
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to delete sheet");
     }
   });
 
   const deleteProjectMutation = api.project.delete.useMutation({
     onSuccess: async () => {
       await utils.project.getAll.invalidate();
+      toast.success("Project deleted successfully");
       router.push('/dashboard');
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to delete project");
     }
   });
 
@@ -191,9 +201,35 @@ export default function Sidebar() {
           })}
         </div>
       )}
+      {sharedSheets.length > 0 && (
+        <div className="flex flex-col gap-4 mt-4">
+          <div className="flex items-center justify-between border-t pt-4">
+            <h1 className="font-bold text-sm uppercase tracking-wider text-gray-500">Shared with me</h1>
+          </div>
+          <div className="flex flex-col gap-1 overflow-y-auto">
+            {sharedSheets.map((sheet) => (
+              <div key={sheet.id} className="flex items-center justify-between group/sheet hover:bg-gray-100 rounded transition-colors">
+                <Link
+                  href={`/sheet/${sheet.id}`}
+                  className="flex-1 text-sm text-gray-600 hover:text-blue-600 px-2 py-1 flex items-center gap-2"
+                >
+                  <span className="w-4 h-4 rounded-sm bg-blue-100 border border-blue-300 flex items-center justify-center text-[10px] text-blue-700">
+                    S
+                  </span>
+                  <span className="truncate">{sheet.name}</span>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="border-t pt-4 mt-auto">
         <button
-          onClick={() => signOut({ callbackUrl: "/login" })}
+          onClick={() => {
+            toast.info("Logging out...");
+            signOut({ callbackUrl: "/login" });
+          }}
           className="flex items-center gap-2 w-full px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
         >
           <svg

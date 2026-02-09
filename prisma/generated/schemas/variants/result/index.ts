@@ -9,6 +9,7 @@ export { UserResultSchema } from './User.result';
 export { VerificationTokenResultSchema } from './VerificationToken.result';
 export { ProjectResultSchema } from './Project.result';
 export { SheetResultSchema } from './Sheet.result';
+export { CollaboratorResultSchema } from './Collaborator.result';
 export { RowResultSchema } from './Row.result';
 export { ColumnResultSchema } from './Column.result';
 export { CellResultSchema } from './Cell.result';
