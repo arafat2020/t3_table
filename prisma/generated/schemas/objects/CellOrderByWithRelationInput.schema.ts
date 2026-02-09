@@ -10,6 +10,7 @@ const makeSchema = () => z.object({
   colIndex: SortOrderSchema.optional(),
   value: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   type: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  align: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional(),
   row: z.lazy(() => RowOrderByWithRelationInputObjectSchema).optional()

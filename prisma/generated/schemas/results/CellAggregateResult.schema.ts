@@ -5,6 +5,7 @@ export const CellAggregateResultSchema = z.object({  _count: z.object({
     colIndex: z.number(),
     value: z.number(),
     type: z.number(),
+    align: z.number(),
     createdAt: z.number(),
     updatedAt: z.number(),
     row: z.number()
@@ -21,6 +22,7 @@ export const CellAggregateResultSchema = z.object({  _count: z.object({
     colIndex: z.number().int().nullable(),
     value: z.string().nullable(),
     type: z.string().nullable(),
+    align: z.string().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional(),
@@ -30,6 +32,7 @@ export const CellAggregateResultSchema = z.object({  _count: z.object({
     colIndex: z.number().int().nullable(),
     value: z.string().nullable(),
     type: z.string().nullable(),
+    align: z.string().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional()});

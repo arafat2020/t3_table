@@ -5,6 +5,7 @@ export const CellGroupByResultSchema = z.array(z.object({
   colIndex: z.number().int(),
   value: z.string(),
   type: z.string(),
+  align: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
   _count: z.object({
@@ -13,6 +14,7 @@ export const CellGroupByResultSchema = z.array(z.object({
     colIndex: z.number(),
     value: z.number(),
     type: z.number(),
+    align: z.number(),
     createdAt: z.number(),
     updatedAt: z.number(),
     row: z.number()
@@ -29,6 +31,7 @@ export const CellGroupByResultSchema = z.array(z.object({
     colIndex: z.number().int().nullable(),
     value: z.string().nullable(),
     type: z.string().nullable(),
+    align: z.string().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional(),
@@ -38,6 +41,7 @@ export const CellGroupByResultSchema = z.array(z.object({
     colIndex: z.number().int().nullable(),
     value: z.string().nullable(),
     type: z.string().nullable(),
+    align: z.string().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional()

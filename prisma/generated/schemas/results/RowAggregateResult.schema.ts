@@ -3,21 +3,25 @@ export const RowAggregateResultSchema = z.object({  _count: z.object({
     id: z.number(),
     sheetId: z.number(),
     index: z.number(),
+    height: z.number(),
     createdAt: z.number(),
     updatedAt: z.number(),
     cells: z.number(),
     Sheet: z.number()
   }).optional(),
   _sum: z.object({
-    index: z.number().nullable()
+    index: z.number().nullable(),
+    height: z.number().nullable()
   }).nullable().optional(),
   _avg: z.object({
-    index: z.number().nullable()
+    index: z.number().nullable(),
+    height: z.number().nullable()
   }).nullable().optional(),
   _min: z.object({
     id: z.string().nullable(),
     sheetId: z.string().nullable(),
     index: z.number().int().nullable(),
+    height: z.number().int().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional(),
@@ -25,6 +29,7 @@ export const RowAggregateResultSchema = z.object({  _count: z.object({
     id: z.string().nullable(),
     sheetId: z.string().nullable(),
     index: z.number().int().nullable(),
+    height: z.number().int().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional()});

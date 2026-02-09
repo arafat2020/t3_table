@@ -6,6 +6,7 @@ const makeSchema = () => z.object({
   id: z.literal(true).optional(),
   sheetId: z.literal(true).optional(),
   index: z.literal(true).optional(),
+  width: z.literal(true).optional(),
   name: z.literal(true).optional(),
   type: z.literal(true).optional(),
   _all: z.literal(true).optional()

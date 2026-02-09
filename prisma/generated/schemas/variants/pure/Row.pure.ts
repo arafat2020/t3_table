@@ -4,6 +4,7 @@ export const RowModelSchema = z.object({
     id: z.string(),
     sheetId: z.string(),
     index: z.number().int(),
+    height: z.number().int().nullable(),
     createdAt: z.date(),
     updatedAt: z.date(),
     cells: z.array(z.unknown()),

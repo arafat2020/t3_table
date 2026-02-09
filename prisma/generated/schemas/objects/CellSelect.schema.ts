@@ -8,6 +8,7 @@ const makeSchema = () => z.object({
   colIndex: z.boolean().optional(),
   value: z.boolean().optional(),
   type: z.boolean().optional(),
+  align: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   row: z.union([z.boolean(), z.lazy(() => RowArgsObjectSchema)]).optional()

@@ -4,6 +4,7 @@ export const ColumnFindManyResultSchema = z.object({
   id: z.string(),
   sheetId: z.string(),
   index: z.number().int(),
+  width: z.number().int().optional(),
   name: z.string().optional(),
   type: z.string().optional(),
   sheet: z.unknown()

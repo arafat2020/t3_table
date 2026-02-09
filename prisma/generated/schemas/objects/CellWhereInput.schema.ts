@@ -16,6 +16,7 @@ const cellwhereinputSchema = z.object({
   colIndex: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
   value: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   type: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
+  align: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   row: z.union([z.lazy(() => RowScalarRelationFilterObjectSchema), z.lazy(() => RowWhereInputObjectSchema)]).optional()

@@ -2,6 +2,7 @@ import * as z from 'zod';
 import type { Prisma } from '@prisma/client';
 import { StringFilterObjectSchema as StringFilterObjectSchema } from './StringFilter.schema';
 import { IntFilterObjectSchema as IntFilterObjectSchema } from './IntFilter.schema';
+import { IntNullableFilterObjectSchema as IntNullableFilterObjectSchema } from './IntNullableFilter.schema';
 import { StringNullableFilterObjectSchema as StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { SheetScalarRelationFilterObjectSchema as SheetScalarRelationFilterObjectSchema } from './SheetScalarRelationFilter.schema';
 import { SheetWhereInputObjectSchema as SheetWhereInputObjectSchema } from './SheetWhereInput.schema'
@@ -13,6 +14,7 @@ const columnwhereinputSchema = z.object({
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   sheetId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   index: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
+  width: z.union([z.lazy(() => IntNullableFilterObjectSchema), z.number().int()]).optional().nullable(),
   name: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   type: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   sheet: z.union([z.lazy(() => SheetScalarRelationFilterObjectSchema), z.lazy(() => SheetWhereInputObjectSchema)]).optional()

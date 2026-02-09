@@ -14,6 +14,8 @@ type CellProps = {
     onCellChange: (r: number, c: number, value: string) => void;
     setEditingCell: (selection: Selection) => void;
     setSelectedCell: (selection: Selection) => void;
+    width?: number;
+    height?: number;
 };
 
 export function Cell({
@@ -26,11 +28,14 @@ export function Cell({
     onDoubleClick,
     onCellChange,
     setEditingCell,
-    setSelectedCell
+    setSelectedCell,
+    width,
+    height
 }: CellProps) {
     return (
         <td
-            className={`border min-w-[80px] h-6 outline-none relative ${isSelected ? 'border-blue-500 border-2 z-10' : 'border-gray-200'}`}
+            className={`border min-w-[40px] h-6 outline-none relative ${isSelected ? 'border-blue-500 border-2 z-10' : 'border-gray-200'}`}
+            style={{ width, height }}
             onClick={() => onCellClick(r, c)}
             onDoubleClick={() => onDoubleClick(r, c)}
         >
@@ -49,7 +54,10 @@ export function Cell({
                     }}
                 />
             ) : (
-                <div className="px-1 w-full h-full truncate pointer-events-none text-sm">
+                <div
+                    className="px-1 w-full h-full truncate pointer-events-none text-sm"
+                    style={{ textAlign: cell?.align || 'left' }}
+                >
                     {cell?.value}
                 </div>
             )}

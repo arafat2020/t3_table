@@ -8,6 +8,7 @@ const makeSchema = () => z.object({
   colIndex: z.literal(true).optional(),
   value: z.literal(true).optional(),
   type: z.literal(true).optional(),
+  align: z.literal(true).optional(),
   createdAt: z.literal(true).optional(),
   updatedAt: z.literal(true).optional(),
   _all: z.literal(true).optional()

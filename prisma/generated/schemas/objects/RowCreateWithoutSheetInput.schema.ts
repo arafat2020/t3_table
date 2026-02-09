@@ -5,6 +5,7 @@ import { CellCreateNestedManyWithoutRowInputObjectSchema as CellCreateNestedMany
 const makeSchema = () => z.object({
   id: z.string().optional(),
   index: z.number().int(),
+  height: z.number().int().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   cells: z.lazy(() => CellCreateNestedManyWithoutRowInputObjectSchema).optional()

@@ -93,12 +93,14 @@ model Row {
     id        String   @id @default(cuid())
     sheetId   String
     index     Int // Row number (0-based)
+    height    Int? // Custom height
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     cells Cell[]
     Sheet Sheet  @relation(fields: [sheetId], references: [id])
 
+    @@unique([sheetId, index], name: "sheetId_index")
     @@index([sheetId, index])
 }
 
@@ -106,12 +108,13 @@ model Column {
     id      String  @id @default(uuid())
     sheetId String
     index   Int // Column number (0-based)
+    width   Int? // Custom width
     name    String? // Optional column name
     type    String? // 'string', 'number', 'date', 'boolean', etc.
 
     sheet Sheet @relation(fields: [sheetId], references: [id])
 
-    @@unique([sheetId, index])
+    @@unique([sheetId, index], name: "sheetId_index")
 }
 
 model Cell {
@@ -120,6 +123,7 @@ model Cell {
     colIndex  Int
     value     String? // Store all values as string (can parse number, boolean, date)
     type      String? // 'string', 'number', 'formula', 'boolean'
+    align     String? // 'left', 'center', 'right'
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

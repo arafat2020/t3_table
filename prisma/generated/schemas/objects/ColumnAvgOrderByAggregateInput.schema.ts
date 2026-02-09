@@ -3,7 +3,8 @@ import type { Prisma } from '@prisma/client';
 import { SortOrderSchema } from '../enums/SortOrder.schema'
 
 const makeSchema = () => z.object({
-  index: SortOrderSchema.optional()
+  index: SortOrderSchema.optional(),
+  width: SortOrderSchema.optional()
 }).strict();
 export const ColumnAvgOrderByAggregateInputObjectSchema: z.ZodType<Prisma.ColumnAvgOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.ColumnAvgOrderByAggregateInput>;
 export const ColumnAvgOrderByAggregateInputObjectZodSchema = makeSchema();

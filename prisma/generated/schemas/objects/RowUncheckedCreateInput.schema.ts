@@ -6,6 +6,7 @@ const makeSchema = () => z.object({
   id: z.string().optional(),
   sheetId: z.string(),
   index: z.number().int(),
+  height: z.number().int().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   cells: z.lazy(() => CellUncheckedCreateNestedManyWithoutRowInputObjectSchema)
 }).strict();

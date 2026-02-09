@@ -6,6 +6,7 @@ export const CellInputSchema = z.object({
     colIndex: z.number().int(),
     value: z.string().optional().nullable(),
     type: z.string().optional().nullable(),
+    align: z.string().optional().nullable(),
     createdAt: z.date(),
     updatedAt: z.date(),
     row: z.unknown()

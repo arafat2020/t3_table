@@ -6,6 +6,7 @@ const makeSchema = () => z.object({
   id: z.boolean().optional(),
   sheetId: z.boolean().optional(),
   index: z.boolean().optional(),
+  width: z.boolean().optional(),
   name: z.boolean().optional(),
   type: z.boolean().optional(),
   sheet: z.union([z.boolean(), z.lazy(() => SheetArgsObjectSchema)]).optional()

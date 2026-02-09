@@ -22,7 +22,14 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
         handleDoubleClick,
         handleCellChange,
         setEditingCell,
-        setSelectedCell
+        setSelectedCell,
+        columnWidths,
+        rowHeights,
+        updateColumnWidth,
+        persistColumnWidth,
+        updateRowHeight,
+        persistRowHeight,
+        handleAlignmentChange
     } = useSpreadsheet({ sheetId, initialData });
 
     return (
@@ -33,6 +40,7 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
                 rowCount={rowCount}
                 colCount={colCount}
                 onCellChange={handleCellChange}
+                onAlignmentChange={handleAlignmentChange}
             />
 
             <Grid
@@ -46,6 +54,12 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
                 onCellChange={handleCellChange}
                 setEditingCell={setEditingCell}
                 setSelectedCell={setSelectedCell}
+                columnWidths={columnWidths}
+                rowHeights={rowHeights}
+                updateColumnWidth={updateColumnWidth}
+                updateRowHeight={updateRowHeight}
+                persistColumnWidth={persistColumnWidth}
+                persistRowHeight={persistRowHeight}
             />
         </div>
     );

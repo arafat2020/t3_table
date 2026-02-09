@@ -10,6 +10,7 @@ export type GridCell = {
     value: string;
     rowId: string;
     colIndex: number;
+    align?: 'left' | 'center' | 'right';
 };
 
 export type Selection = { r: number, c: number } | null;
@@ -60,7 +61,14 @@ export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
     const [selectedCell, setSelectedCell] = useState<Selection>(null);
     const [editingCell, setEditingCell] = useState<Selection>(null);
 
+    // Sizing state
+    const [columnWidths, setColumnWidths] = useState<Record<number, number>>({});
+    const [rowHeights, setRowHeights] = useState<Record<number, number>>({});
+
     const utils = api.useUtils();
+    const updateRowHeightMutation = api.sheet.updateRowHeight.useMutation();
+    const updateColumnWidthMutation = api.sheet.updateColumnWidth.useMutation();
+
     const updateCellMutation = api.sheet.updateCell.useMutation({
         onMutate: async () => {
             await utils.sheet.get.cancel();
@@ -70,17 +78,29 @@ export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
     // Load initial data into map
     useEffect(() => {
         const newData: Record<string, GridCell> = {};
+        const newRowHeights: Record<number, number> = {};
+        const newColWidths: Record<number, number> = {};
+
         initialData.rows.forEach(row => {
+            if (row.height) newRowHeights[row.index] = row.height;
             row.cells.forEach(cell => {
                 newData[`${row.index},${cell.colIndex}`] = {
                     id: cell.id,
                     value: cell.value || "",
                     rowId: row.id,
-                    colIndex: cell.colIndex
+                    colIndex: cell.colIndex,
+                    align: (cell.align as 'left' | 'center' | 'right') || 'left'
                 };
             });
         });
+
+        initialData.Column.forEach(col => {
+            if (col.width) newColWidths[col.index] = col.width;
+        });
+
         setData(newData);
+        setRowHeights(newRowHeights);
+        setColumnWidths(newColWidths);
     }, [initialData]);
 
     // Update row count based on screen height after mount
@@ -219,16 +239,63 @@ export function useSpreadsheet({ sheetId, initialData }: UseSpreadsheetProps) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
 
+    const updateColumnWidth = useCallback((index: number, width: number) => {
+        setColumnWidths(prev => ({ ...prev, [index]: Math.max(width, 40) }));
+    }, []);
+
+    const persistColumnWidth = useCallback((index: number, width: number) => {
+        updateColumnWidthMutation.mutate({ sheetId, colIndex: index, width: Math.max(width, 40) });
+    }, [sheetId, updateColumnWidthMutation]);
+
+    const updateRowHeight = useCallback((index: number, height: number) => {
+        setRowHeights(prev => ({ ...prev, [index]: Math.max(height, 20) }));
+    }, []);
+
+    const persistRowHeight = useCallback((index: number, height: number) => {
+        updateRowHeightMutation.mutate({ sheetId, rowIndex: index, height: Math.max(height, 20) });
+    }, [sheetId, updateRowHeightMutation]);
+
+    const handleAlignmentChange = (align: 'left' | 'center' | 'right') => {
+        if (!selectedCell) return;
+        const { r, c } = selectedCell;
+        const key = `${r},${c}`;
+        const existing = data[key];
+
+        const newData = { ...data };
+        newData[key] = {
+            ...existing,
+            rowId: existing?.rowId || "temp",
+            colIndex: c,
+            value: existing?.value || "",
+            align
+        };
+        setData(newData);
+
+        updateCellMutation.mutate({
+            sheetId: sheetId,
+            rowIndex: r,
+            colIndex: c,
+            align: align
+        });
+    };
+
     return {
         rowCount,
         colCount,
         data,
         selectedCell,
         editingCell,
+        columnWidths,
+        rowHeights,
         setEditingCell,
         setSelectedCell,
         handleCellClick,
         handleDoubleClick,
-        handleCellChange
+        handleCellChange,
+        updateColumnWidth,
+        persistColumnWidth,
+        updateRowHeight,
+        persistRowHeight,
+        handleAlignmentChange
     };
 }

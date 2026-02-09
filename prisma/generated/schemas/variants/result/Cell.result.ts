@@ -6,6 +6,7 @@ export const CellResultSchema = z.object({
     colIndex: z.number().int(),
     value: z.string().nullable(),
     type: z.string().nullable(),
+    align: z.string().nullable(),
     createdAt: z.date(),
     updatedAt: z.date(),
     row: z.unknown()

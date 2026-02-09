@@ -4,6 +4,7 @@ export const ColumnModelSchema = z.object({
     id: z.string(),
     sheetId: z.string(),
     index: z.number().int(),
+    width: z.number().int().nullable(),
     name: z.string().nullable(),
     type: z.string().nullable(),
     sheet: z.unknown()

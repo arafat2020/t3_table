@@ -39,8 +39,25 @@ export const sheetRouter = createTRPCRouter({
         sheetId: z.string(),
         rowIndex: z.number(),
         colIndex: z.number(),
-        value: z.string()
+        value: z.string().optional(),
+        align: z.string().optional()
     })).mutation(async ({ input }) => {
         return await sheetService.updateCell(input);
+    }),
+
+    updateRowHeight: protectedProcedure.input(z.object({
+        sheetId: z.string(),
+        rowIndex: z.number(),
+        height: z.number()
+    })).mutation(async ({ input }) => {
+        return await sheetService.updateRowHeight(input);
+    }),
+
+    updateColumnWidth: protectedProcedure.input(z.object({
+        sheetId: z.string(),
+        colIndex: z.number(),
+        width: z.number()
+    })).mutation(async ({ input }) => {
+        return await sheetService.updateColumnWidth(input);
     })
 })

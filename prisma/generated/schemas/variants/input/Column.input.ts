@@ -4,6 +4,7 @@ export const ColumnInputSchema = z.object({
     id: z.string(),
     sheetId: z.string(),
     index: z.number().int(),
+    width: z.number().int().optional().nullable(),
     name: z.string().optional().nullable(),
     type: z.string().optional().nullable(),
     sheet: z.unknown()

@@ -13,6 +13,7 @@ export const ColumnFindFirstSelectSchema: z.ZodType<Prisma.ColumnSelect> = z.obj
     id: z.boolean().optional(),
     sheetId: z.boolean().optional(),
     index: z.boolean().optional(),
+    width: z.boolean().optional(),
     name: z.boolean().optional(),
     type: z.boolean().optional(),
     sheet: z.boolean().optional()
@@ -22,6 +23,7 @@ export const ColumnFindFirstSelectZodSchema = z.object({
     id: z.boolean().optional(),
     sheetId: z.boolean().optional(),
     index: z.boolean().optional(),
+    width: z.boolean().optional(),
     name: z.boolean().optional(),
     type: z.boolean().optional(),
     sheet: z.boolean().optional()

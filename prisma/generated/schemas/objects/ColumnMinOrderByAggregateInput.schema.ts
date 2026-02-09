@@ -6,6 +6,7 @@ const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   sheetId: SortOrderSchema.optional(),
   index: SortOrderSchema.optional(),
+  width: SortOrderSchema.optional(),
   name: SortOrderSchema.optional(),
   type: SortOrderSchema.optional()
 }).strict();

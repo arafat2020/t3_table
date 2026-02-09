@@ -3,6 +3,7 @@ export const RowUpsertResultSchema = z.object({
   id: z.string(),
   sheetId: z.string(),
   index: z.number().int(),
+  height: z.number().int().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
   cells: z.array(z.unknown()),

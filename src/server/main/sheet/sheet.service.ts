@@ -94,9 +94,73 @@ export class SheetService {
         }
     }
 
+    public async updateRowHeight(input: { sheetId: string; rowIndex: number; height: number }) {
+        try {
+            const row = await this.db.row.findFirst({
+                where: {
+                    sheetId: input.sheetId,
+                    index: input.rowIndex
+                }
+            });
+
+            if (row) {
+                return await this.db.row.update({
+                    where: { id: row.id },
+                    data: { height: input.height }
+                });
+            } else {
+                return await this.db.row.create({
+                    data: {
+                        sheetId: input.sheetId,
+                        index: input.rowIndex,
+                        height: input.height
+                    }
+                });
+            }
+        } catch (error) {
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Failed to update row height",
+                cause: String(error),
+            });
+        }
+    }
+
+    public async updateColumnWidth(input: { sheetId: string; colIndex: number; width: number }) {
+        try {
+            const column = await this.db.column.findFirst({
+                where: {
+                    sheetId: input.sheetId,
+                    index: input.colIndex
+                }
+            });
+
+            if (column) {
+                return await this.db.column.update({
+                    where: { id: column.id },
+                    data: { width: input.width }
+                });
+            } else {
+                return await this.db.column.create({
+                    data: {
+                        sheetId: input.sheetId,
+                        index: input.colIndex,
+                        width: input.width
+                    }
+                });
+            }
+        } catch (error) {
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Failed to update column width",
+                cause: String(error),
+            });
+        }
+    }
+
     public async updateCell(rawData: unknown) {
         // Validation should happen before this or here with a Custom Schema
-        const { sheetId, rowIndex, colIndex, value } = rawData as { sheetId: string, rowIndex: number, colIndex: number, value: string };
+        const { sheetId, rowIndex, colIndex, value, align } = rawData as { sheetId: string, rowIndex: number, colIndex: number, value: string, align?: string };
 
         try {
             // 1. Find or create Row
@@ -116,23 +180,32 @@ export class SheetService {
                 });
             }
 
-            // 2. Upsert Cell
-            const cell = await this.db.cell.upsert({
+            // 2. Find or create Cell
+            const cell = await this.db.cell.findFirst({
                 where: {
-                    rowId_colIndex: {
-                        rowId: row.id,
-                        colIndex: colIndex
-                    }
-                },
-                update: {
-                    value: value
-                },
-                create: {
                     rowId: row.id,
-                    colIndex: colIndex,
-                    value: value
+                    colIndex: colIndex
                 }
             });
+
+            if (cell) {
+                return await this.db.cell.update({
+                    where: { id: cell.id },
+                    data: {
+                        ...(value !== undefined && { value }),
+                        ...(align !== undefined && { align })
+                    }
+                });
+            } else {
+                return await this.db.cell.create({
+                    data: {
+                        rowId: row.id,
+                        colIndex: colIndex,
+                        value: value ?? "",
+                        align: align ?? "left"
+                    }
+                });
+            }
 
             return cell;
 

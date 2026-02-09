@@ -8,6 +8,7 @@ const makeSchema = () => z.object({
   id: z.boolean().optional(),
   sheetId: z.boolean().optional(),
   index: z.boolean().optional(),
+  height: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   cells: z.union([z.boolean(), z.lazy(() => CellFindManySchema)]).optional(),

@@ -6,6 +6,7 @@ import { SheetCreateNestedOneWithoutRowsInputObjectSchema as SheetCreateNestedOn
 const makeSchema = () => z.object({
   id: z.string().optional(),
   index: z.number().int(),
+  height: z.number().int().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   cells: z.lazy(() => CellCreateNestedManyWithoutRowInputObjectSchema),
   Sheet: z.lazy(() => SheetCreateNestedOneWithoutRowsInputObjectSchema)

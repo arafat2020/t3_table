@@ -12,6 +12,7 @@ const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   sheetId: SortOrderSchema.optional(),
   index: SortOrderSchema.optional(),
+  width: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   name: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   type: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   _count: z.lazy(() => ColumnCountOrderByAggregateInputObjectSchema).optional(),

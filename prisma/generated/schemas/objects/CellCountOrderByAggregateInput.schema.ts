@@ -8,6 +8,7 @@ const makeSchema = () => z.object({
   colIndex: SortOrderSchema.optional(),
   value: SortOrderSchema.optional(),
   type: SortOrderSchema.optional(),
+  align: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional()
 }).strict();

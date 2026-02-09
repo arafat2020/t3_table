@@ -15,6 +15,7 @@ export const CellFindManySelectSchema: z.ZodType<Prisma.CellSelect> = z.object({
     colIndex: z.boolean().optional(),
     value: z.boolean().optional(),
     type: z.boolean().optional(),
+    align: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
     row: z.boolean().optional()
@@ -26,6 +27,7 @@ export const CellFindManySelectZodSchema = z.object({
     colIndex: z.boolean().optional(),
     value: z.boolean().optional(),
     type: z.boolean().optional(),
+    align: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
     row: z.boolean().optional()
