@@ -4,6 +4,7 @@ import React from 'react';
 import { HeaderCell } from "./HeaderCell";
 import { Cell } from "./Cell";
 import { type GridCell, type Selection } from "../../hooks/useSpreadsheet";
+import type { RemoteCursor } from "../../hooks/useLiveCursors";
 
 type GridProps = {
     rowCount: number;
@@ -23,6 +24,7 @@ type GridProps = {
     persistColumnWidth: (index: number, width: number) => void;
     persistRowHeight: (index: number, height: number) => void;
     isReadOnly?: boolean;
+    remoteCursors?: Map<string, RemoteCursor>;
 };
 
 export function Grid({
@@ -42,7 +44,8 @@ export function Grid({
     updateRowHeight,
     persistColumnWidth,
     persistRowHeight,
-    isReadOnly
+    isReadOnly,
+    remoteCursors
 }: GridProps) {
     const [resizing, setResizing] = React.useState<{ type: 'row' | 'col'; index: number; startPos: number; startSize: number } | null>(null);
 
@@ -121,6 +124,17 @@ export function Grid({
                                 const isSelected = selectedCell?.r === r && selectedCell?.c === c;
                                 const isEditing = editingCell?.r === r && editingCell?.c === c;
 
+                                // Find remote cursor on this cell
+                                let remoteCursor: RemoteCursor | undefined;
+                                if (remoteCursors) {
+                                    for (const cursor of remoteCursors.values()) {
+                                        if (cursor.row === r && cursor.col === c) {
+                                            remoteCursor = cursor;
+                                            break;
+                                        }
+                                    }
+                                }
+
                                 return (
                                     <Cell
                                         key={c}
@@ -136,6 +150,7 @@ export function Grid({
                                         onCellChange={onCellChange}
                                         setEditingCell={setEditingCell}
                                         setSelectedCell={setSelectedCell}
+                                        remoteCursor={remoteCursor}
                                     />
                                 );
                             })}

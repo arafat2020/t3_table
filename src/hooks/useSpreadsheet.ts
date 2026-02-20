@@ -4,7 +4,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from "~/trpc/react";
 import { type Sheet, type Row, type Cell, type Column } from "@prisma/client";
 
-// Types for our grid data structure
+/**
+ * Types for the grid data structure.
+ * Represents a single cell in the spreadsheet grid.
+ */
 export type GridCell = {
     id?: string;
     value: string;
@@ -13,17 +16,30 @@ export type GridCell = {
     align?: 'left' | 'center' | 'right';
 };
 
+/**
+ * Type representing the currently selected or editing cell coordinates.
+ * null if no cell is selected.
+ */
 export type Selection = { r: number, c: number } | null;
 
+/**
+ * Properties for the useSpreadsheet hook.
+ */
 type UseSpreadsheetProps = {
+    /** The unique identifier for the sheet */
     sheetId: string;
+    /** The initial data including rows, cells, and column metadata */
     initialData: Sheet & { rows: (Row & { cells: Cell[] })[], Column: Column[] };
+    /** User's role which determines edit permissions */
     role: "owner" | "editor" | "viewer";
 };
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// Helper to get column name from index (0 -> A, 1 -> B, ..., 26 -> AA)
+/**
+ * Utility to convert a zero-based column index to an Excel-like label.
+ * @example 0 -> A, 1 -> B, 26 -> AA
+ */
 export const getColumnLabel = (index: number): string => {
     let label = "";
     let i = index;
@@ -34,7 +50,9 @@ export const getColumnLabel = (index: number): string => {
     return label;
 };
 
-// Calculate initial row count based on screen height
+/**
+ * Calculates the initial number of rows to display based on window height.
+ */
 const calculateRowsFromHeight = (): number => {
     const ROW_HEIGHT = 24; // h-6 = 24px per row
     const HEADER_HEIGHT = 36; // header row height
@@ -48,36 +66,72 @@ const calculateRowsFromHeight = (): number => {
     return Math.max(Math.floor(availableHeight / ROW_HEIGHT), 10); // minimum 10 rows
 };
 
+/**
+ * Main hook for spreadsheet logic, managing state, selection, editing, and persistence.
+ * 
+ * @param props - Configuration and initial data
+ * @returns State and handlers for the spreadsheet UI
+ */
 export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetProps) {
     const isReadOnly = role === "viewer";
-    // Initialize grid size
+
+    // --- Grid Dimensions State ---
     const [rowCount, setRowCount] = useState(() => {
         return Math.max(25, initialData.rows.length + 5);
     });
     const [colCount, setColCount] = useState(Math.max(10, initialData.Column.length + 5));
 
+    // --- Cell Data State ---
     // Data map: string key "rowIndex,colIndex" -> Cell value
     const [data, setData] = useState<Record<string, GridCell>>({});
 
-    // State for selection, active cell
+    // --- Selection & Editing State ---
     const [selectedCell, setSelectedCell] = useState<Selection>(null);
     const [editingCell, setEditingCell] = useState<Selection>(null);
 
-    // Sizing state
+    // --- Sizing State ---
     const [columnWidths, setColumnWidths] = useState<Record<number, number>>({});
     const [rowHeights, setRowHeights] = useState<Record<number, number>>({});
 
+    // --- API & Persistence ---
     const utils = api.useUtils();
     const updateRowHeightMutation = api.sheet.updateRowHeight.useMutation();
     const updateColumnWidthMutation = api.sheet.updateColumnWidth.useMutation();
 
+    /**
+     * Mutation for updating cell content.
+     * Optimistically cancels background fetches to avoid race conditions.
+     */
     const updateCellMutation = api.sheet.updateCell.useMutation({
         onMutate: async () => {
             await utils.sheet.get.cancel();
         }
     });
 
-    // Load initial data into map
+    // --- Live Cell Update Subscription ---
+    api.sheet.onCellUpdate.useSubscription(
+        { sheetId },
+        {
+            onData(event) {
+                setData((prev) => {
+                    const key = `${event.rowIndex},${event.colIndex}`;
+                    const existing = prev[key];
+                    return {
+                        ...prev,
+                        [key]: {
+                            ...existing,
+                            value: event.value ?? existing?.value ?? "",
+                            rowId: existing?.rowId ?? "remote",
+                            colIndex: event.colIndex,
+                            ...(event.align ? { align: event.align as 'left' | 'center' | 'right' } : {}),
+                        },
+                    };
+                });
+            },
+        }
+    );
+
+    // --- Initial Data Loading ---
     useEffect(() => {
         const newData: Record<string, GridCell> = {};
         const newRowHeights: Record<number, number> = {};
@@ -105,7 +159,7 @@ export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetPro
         setColumnWidths(newColWidths);
     }, [initialData]);
 
-    // Update row count based on screen height after mount
+    // --- Dynamic Sizing Effect ---
     useEffect(() => {
         const updateRowCount = () => {
             const calculatedRows = calculateRowsFromHeight();
@@ -117,20 +171,29 @@ export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetPro
         return () => window.removeEventListener('resize', updateRowCount);
     }, [initialData.rows.length]);
 
-    // Handle cell click
+    // --- Interaction Handlers ---
+
+    /**
+     * Handles single cell selection.
+     */
     const handleCellClick = (r: number, c: number) => {
         setSelectedCell({ r, c });
         setEditingCell(null);
     };
 
-    // Handle double click to edit
+    /**
+     * Enters editing mode for a specific cell.
+     */
     const handleDoubleClick = (r: number, c: number) => {
         if (isReadOnly) return;
         setSelectedCell({ r, c });
         setEditingCell({ r, c });
     };
 
-    // Handle cell value change
+    /**
+     * Updates cell value locally and persists to the server.
+     * Includes auto-expansion logic if near edges.
+     */
     const handleCellChange = (r: number, c: number, value: string) => {
         if (isReadOnly) return;
         const key = `${r},${c}`;
@@ -161,12 +224,13 @@ export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetPro
         });
     };
 
-    // Keyboard navigation handler
+    // --- Keyboard Navigation ---
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (!selectedCell) return;
 
         const { r, c } = selectedCell;
 
+        // Special handling if currently editing
         if (editingCell) {
             if (e.key === 'Escape') {
                 e.preventDefault();
@@ -191,6 +255,7 @@ export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetPro
             return;
         }
 
+        // Standard navigation
         if (e.key === 'ArrowUp') {
             e.preventDefault();
             setSelectedCell({ r: Math.max(r - 1, 0), c });
@@ -225,6 +290,7 @@ export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetPro
             e.preventDefault();
             setSelectedCell(null);
         } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+            // Typing directly logic
             if (isReadOnly) return;
             setEditingCell({ r, c });
             const key = `${r},${c}`;
@@ -244,6 +310,8 @@ export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetPro
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
 
+    // --- Dimensions & Persistence Handlers ---
+
     const updateColumnWidth = useCallback((index: number, width: number) => {
         setColumnWidths(prev => ({ ...prev, [index]: Math.max(width, 40) }));
     }, []);
@@ -262,6 +330,9 @@ export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetPro
         updateRowHeightMutation.mutate({ sheetId, rowIndex: index, height: Math.max(height, 20) });
     }, [sheetId, updateRowHeightMutation, isReadOnly]);
 
+    /**
+     * Updates the text alignment of the selected cell.
+     */
     const handleAlignmentChange = (align: 'left' | 'center' | 'right') => {
         if (!selectedCell || isReadOnly) return;
         const { r, c } = selectedCell;
@@ -307,3 +378,4 @@ export function useSpreadsheet({ sheetId, initialData, role }: UseSpreadsheetPro
         isReadOnly
     };
 }
+
