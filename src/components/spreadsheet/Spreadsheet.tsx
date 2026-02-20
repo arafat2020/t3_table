@@ -3,6 +3,7 @@
 import React from 'react';
 import { type Sheet, type Row, type Cell, type Column } from "@prisma/client";
 import { useSpreadsheet } from "../../hooks/useSpreadsheet";
+import { useLiveCursors } from "../../hooks/useLiveCursors";
 import { Toolbar } from "./Toolbar";
 import { Grid } from "./Grid";
 
@@ -32,6 +33,8 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
         handleAlignmentChange,
         isReadOnly
     } = useSpreadsheet({ sheetId, initialData, role: initialData.role });
+
+    const remoteCursors = useLiveCursors({ sheetId, selectedCell });
 
     return (
         <div className="flex flex-col h-full w-full overflow-hidden text-sm">
@@ -63,6 +66,7 @@ export function Spreadsheet({ sheetId, initialData }: SpreadsheetProps) {
                 persistColumnWidth={persistColumnWidth}
                 persistRowHeight={persistRowHeight}
                 isReadOnly={isReadOnly}
+                remoteCursors={remoteCursors}
             />
         </div>
     );

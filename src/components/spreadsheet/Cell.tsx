@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { type GridCell, type Selection } from "../../hooks/useSpreadsheet";
+import type { RemoteCursor } from "../../hooks/useLiveCursors";
 
 type CellProps = {
     r: number;
@@ -16,6 +17,8 @@ type CellProps = {
     setSelectedCell: (selection: Selection) => void;
     width?: number;
     height?: number;
+    /** Remote cursor data for this cell, if another user is selecting it */
+    remoteCursor?: RemoteCursor;
 };
 
 export function Cell({
@@ -30,15 +33,32 @@ export function Cell({
     setEditingCell,
     setSelectedCell,
     width,
-    height
+    height,
+    remoteCursor
 }: CellProps) {
     return (
         <td
             className={`border min-w-[40px] h-6 outline-none relative ${isSelected ? 'border-blue-500 border-2 z-10' : 'border-gray-200'}`}
-            style={{ width, height }}
+            style={{
+                width,
+                height,
+                ...(remoteCursor && !isSelected
+                    ? { boxShadow: `inset 0 0 0 2px ${remoteCursor.color}` }
+                    : {}),
+            }}
             onClick={() => onCellClick(r, c)}
             onDoubleClick={() => onDoubleClick(r, c)}
         >
+            {/* Remote cursor name label */}
+            {remoteCursor && (
+                <div
+                    className="absolute -top-5 left-0 text-white text-[10px] px-1 rounded-sm whitespace-nowrap z-30 pointer-events-none"
+                    style={{ backgroundColor: remoteCursor.color }}
+                >
+                    {remoteCursor.userName}
+                </div>
+            )}
+
             {isEditing ? (
                 <input
                     className="w-full h-full absolute top-0 left-0 px-1 border-none outline-none z-20"
@@ -64,3 +84,4 @@ export function Cell({
         </td>
     );
 }
+
